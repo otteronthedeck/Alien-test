@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>外星基因检测报告 · 母星召回计划</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+:root {
+  --bg: #1a1a18;
+  --bg2: #2e2d2a;
+  --bg3: #3a3936;
+  --text: #c9c5bb;
+  --text2: #8a8580;
+  --accent: #c8861a;
+  --olive: #4a4f3d;
+  --sand: #8a7a5c;
+  --red: #8a2f23;
+  --white: #e8e4dc;
+  --mono: 'Courier New', 'Lucida Console', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft YaHei',sans-serif;overflow-x:hidden}
+
+/* GRAIN OVERLAY */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.04}
+
+/* FOG */
+.fog{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 20% 80%,rgba(74,79,61,.15) 0,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(26,26,24,.4) 0,transparent 50%)}
+.fog::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(200,134,26,.04) 0,transparent 70%);animation:fogshift 8s ease-in-out infinite alternate}
+@keyframes fogshift{from{opacity:.5}to{opacity:1}}
+
+/* LAYOUT */
+#app{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.screen{display:none;width:100%;max-width:680px;animation:fadein .6s ease}
+.screen.active{display:flex;flex-direction:column}
+@keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* HEADER */
+.sys-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--bg3);position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,24,.92);backdrop-filter:blur(4px)}
+.sys-logo{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase}
+.lang-btn{background:none;border:1px solid var(--bg3);color:var(--text2);font-size:11px;font-family:var(--mono);padding:4px 10px;cursor:pointer;letter-spacing:.1em;transition:.2s}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* TECH ANNOTATIONS */
+.tech{font-family:var(--mono);font-size:9px;color:var(--sand);letter-spacing:.12em;text-transform:uppercase;opacity:.6}
+
+/* LANDING */
+.landing-wrap{padding:60px 24px 40px;margin-top:60px}
+.landing-code{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.2em;margin-bottom:20px;opacity:.8}
+.landing-title{font-size:clamp(28px,6vw,48px);font-weight:900;line-height:1.1;color:var(--white);margin-bottom:8px;letter-spacing:-.02em}
+.landing-sub{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.2em;margin-bottom:32px;text-transform:uppercase}
+.story-block{background:rgba(46,45,42,.6);border:1px solid var(--bg3);border-left:3px solid var(--accent);padding:20px 24px;margin-bottom:32px;line-height:1.8;font-size:14px}
+.story-block p{margin-bottom:12px;color:var(--text)}
+.story-block p:last-child{margin-bottom:0;color:var(--accent);font-size:13px;font-style:italic}
+.btn-primary{display:block;width:100%;padding:16px 24px;background:var(--accent);color:var(--bg);font-size:15px;font-weight:700;letter-spacing:.1em;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:.2s;text-transform:uppercase;position:relative;overflow:hidden}
+.btn-primary::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.2s}
+.btn-primary:hover::before{background:rgba(255,255,255,.1)}
+.btn-refuse{display:block;text-align:center;margin-top:16px;color:var(--text2);font-size:12px;font-family:var(--mono);cursor:pointer;letter-spacing:.05em;text-decoration:none;opacity:.5;transition:.2s}
+.btn-refuse:hover{opacity:.8;color:var(--text)}
+.disclaimer{font-size:11px;color:var(--text2);text-align:center;margin-top:24px;opacity:.5;line-height:1.6}
+
+/* ID GEN */
+.idgen-wrap{text-align:center;padding:80px 24px;font-family:var(--mono)}
+.idgen-wrap .tech{font-size:11px;margin-bottom:20px;display:block}
+.idgen-text{font-size:13px;color:var(--text);margin-bottom:16px;min-height:24px}
+.idgen-id{font-size:32px;color:var(--accent);font-weight:700;letter-spacing:.2em;min-height:48px;display:flex;align-items:center;justify-content:center}
+.cursor{animation:blink .7s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* SEGMENT INTRO */
+.seg-wrap{text-align:center;padding:80px 24px;font-family:var(--mono)}
+.seg-num{font-size:11px;color:var(--accent);letter-spacing:.3em;margin-bottom:12px;text-transform:uppercase}
+.seg-title{font-size:22px;color:var(--white);font-weight:700;letter-spacing:.05em;margin-bottom:12px}
+.seg-desc{font-size:12px;color:var(--text2);letter-spacing:.1em}
+
+/* SYSTEM NOTICE */
+.notice-wrap{padding:60px 24px;font-family:var(--mono);text-align:center}
+.notice-text{font-size:14px;color:var(--accent);letter-spacing:.08em;line-height:1.8;border:1px solid rgba(200,134,26,.3);padding:20px 24px;background:rgba(200,134,26,.04)}
+.notice-text .warn{font-size:11px;color:var(--text2);margin-top:8px;display:block}
+
+/* QUIZ */
+.quiz-wrap{padding:70px 24px 40px;margin-top:0}
+.progress-bar{display:flex;gap:3px;margin-bottom:8px}
+.prog-seg{display:flex;gap:2px}
+.prog-seg+.prog-seg{margin-left:6px}
+.prog-cell{width:20px;height:6px;background:var(--bg3);transition:.3s}
+.prog-cell.lit{background:var(--accent)}
+.prog-cell.seg-border{margin-left:4px}
+.prog-label{font-family:var(--mono);font-size:9px;color:var(--text2);margin-bottom:24px;letter-spacing:.1em}
+.q-num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.2em;margin-bottom:16px;text-transform:uppercase}
+.q-text{font-size:18px;color:var(--white);line-height:1.6;margin-bottom:28px;font-weight:600}
+.q-tag{font-size:11px;color:var(--sand);margin-left:8px;font-weight:400;font-family:var(--mono)}
+.options{display:flex;flex-direction:column;gap:10px}
+.opt-btn{background:rgba(46,45,42,.8);border:1px solid var(--bg3);padding:14px 18px;text-align:left;cursor:pointer;color:var(--text);font-size:14px;font-family:inherit;line-height:1.5;transition:.2s;position:relative}
+.opt-btn:hover{border-color:var(--accent);background:rgba(200,134,26,.06);color:var(--white)}
+.opt-btn .opt-key{font-family:var(--mono);font-size:10px;color:var(--accent);margin-right:10px;letter-spacing:.1em}
+.opt-btn.selected{border-color:var(--accent);background:rgba(200,134,26,.12);color:var(--white)}
+
+/* SCANNING */
+.scan-wrap{padding:80px 24px;font-family:var(--mono)}
+.scan-header{font-size:10px;color:var(--accent);letter-spacing:.2em;margin-bottom:20px;text-transform:uppercase}
+.scan-terminal{background:rgba(10,10,8,.8);border:1px solid var(--bg3);padding:20px;min-height:280px;font-size:12px;line-height:2;color:var(--text)}
+.scan-line{opacity:0;animation:scanline .1s ease forwards}
+.scan-line.warn{color:var(--accent)}
+.scan-line.ok{color:#6a8f5a}
+.scan-line.err{color:#8a4a3a}
+@keyframes scanline{from{opacity:0}to{opacity:1}}
+.scan-cursor{display:inline-block;width:8px;height:14px;background:var(--accent);animation:blink .7s step-end infinite;vertical-align:text-bottom}
+
+/* RESULT */
+.result-wrap{padding:70px 16px 40px;margin-top:0}
+.result-header{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.2em;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.result-stamp{background:var(--red);color:var(--white);font-family:var(--mono);font-size:10px;padding:3px 10px;letter-spacing:.2em;transform:rotate(-2deg);display:inline-block}
+.gene-portrait{width:100%;max-height:280px;object-fit:cover;border:1px solid var(--bg3);margin-bottom:24px;background:var(--bg2);position:relative;overflow:hidden}
+.portrait-placeholder{width:100%;height:260px;display:flex;align-items:center;justify-content:center;font-size:80px;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--bg3);position:relative;overflow:hidden}
+.portrait-placeholder::after{content:attr(data-label);position:absolute;bottom:12px;right:16px;font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:.15em;text-transform:uppercase}
+.gene-name{font-size:32px;font-weight:900;color:var(--white);margin-bottom:4px;letter-spacing:-.01em}
+.gene-name-en{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.2em;margin-bottom:16px;text-transform:uppercase}
+.match-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.match-score{font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:.1em}
+.rarity-badge{font-family:var(--mono);font-size:11px;background:rgba(200,134,26,.15);border:1px solid rgba(200,134,26,.4);color:var(--accent);padding:4px 12px;letter-spacing:.1em}
+.section-label{font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px;margin-top:28px;padding-bottom:6px;border-bottom:1px solid var(--bg3)}
+.mix-bar{margin-bottom:24px}
+.mix-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.mix-name{font-family:var(--mono);font-size:11px;color:var(--text2);width:80px;flex-shrink:0}
+.mix-track{flex:1;height:8px;background:var(--bg3);position:relative;overflow:hidden}
+.mix-fill{height:100%;background:var(--accent);transition:width 1s ease}
+.mix-pct{font-family:var(--mono);font-size:11px;color:var(--text2);width:36px;text-align:right}
+.info-card{background:rgba(46,45,42,.6);border:1px solid var(--bg3);padding:16px 18px;margin-bottom:16px}
+.info-card .tag{font-size:12px;color:var(--sand);margin-right:6px}
+.info-card p{font-size:13px;line-height:1.8;color:var(--text)}
+.personality-text{font-size:14px;line-height:1.9;color:var(--text);background:rgba(46,45,42,.4);border-left:3px solid var(--accent);padding:16px 18px;margin-bottom:16px}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.skill-chip{background:rgba(74,79,61,.4);border:1px solid var(--olive);padding:10px 12px;font-size:12px;color:var(--text)}
+.skill-chip.weak{background:rgba(138,47,35,.15);border-color:rgba(138,47,35,.4);color:#c07060}
+.ally-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.ally-chip{font-family:var(--mono);font-size:11px;padding:6px 14px;letter-spacing:.08em}
+.ally-chip.ally{background:rgba(74,79,61,.4);border:1px solid var(--olive);color:#8ab080}
+.ally-chip.enemy{background:rgba(138,47,35,.15);border:1px solid rgba(138,47,35,.4);color:#c07060}
+.epilogue{background:rgba(10,10,8,.6);border:1px solid var(--bg3);padding:20px 22px;margin:28px 0;font-family:var(--mono);font-size:12px;line-height:2;color:var(--text2)}
+.epilogue .blacked{background:var(--text2);color:transparent;user-select:none;letter-spacing:.3em}
+.btn-cert{display:block;width:100%;padding:16px;background:var(--accent);color:var(--bg);font-weight:700;font-size:14px;letter-spacing:.12em;text-align:center;cursor:pointer;border:none;font-family:inherit;text-transform:uppercase;margin-bottom:12px;transition:.2s}
+.btn-cert:hover{filter:brightness(1.1)}
+.btn-share{display:block;width:100%;padding:14px;background:transparent;color:var(--accent);font-size:13px;letter-spacing:.1em;text-align:center;cursor:pointer;border:1px solid rgba(200,134,26,.4);font-family:inherit;text-transform:uppercase;transition:.2s}
+.btn-share:hover{background:rgba(200,134,26,.08)}
+.media-list{list-style:none;padding:0}
+.media-list li{font-size:13px;color:var(--text);padding:8px 0;border-bottom:1px solid var(--bg3);line-height:1.6}
+.media-list li:last-child{border-bottom:none}
+.media-list .label-tag{font-size:11px;color:var(--sand);font-family:var(--mono);margin-right:6px}
+
+/* TERRAN RESULT */
+.terran-wrap{padding:70px 16px 40px}
+.terran-notice{background:rgba(138,47,35,.1);border:2px solid var(--red);padding:24px;margin-bottom:24px;font-family:var(--mono)}
+.terran-notice .tn-label{font-size:10px;color:var(--red);letter-spacing:.25em;margin-bottom:12px;text-transform:uppercase}
+.terran-notice .tn-text{font-size:13px;line-height:2;color:var(--text)}
+.terran-draft{font-size:15px;line-height:2;color:var(--white);background:rgba(26,26,24,.8);border:1px solid var(--bg3);padding:24px;margin-bottom:24px}
+.terran-draft .code{font-family:var(--mono);color:var(--accent)}
+
+/* CERTIFICATE MODAL */
+.cert-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,8,.95);z-index:200;overflow-y:auto;padding:20px;align-items:flex-start;justify-content:center}
+.cert-overlay.active{display:flex}
+.cert-container{width:100%;max-width:400px;margin:auto}
+.cert-close{position:fixed;top:16px;right:20px;background:none;border:none;color:var(--text2);font-size:24px;cursor:pointer;z-index:201;font-family:var(--mono)}
+.cert-actions{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+
+/* CERTIFICATE CARD (for html2canvas) */
+#cert-card{width:400px;min-height:533px;background:#14130f;border:1px solid #3a3936;padding:32px 28px;font-family:'PingFang SC','Microsoft YaHei','Courier New',monospace;position:relative;overflow:hidden;flex-direction:column}
+#cert-card .cert-bg-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#c8861a 0,#c8861a 1px,transparent 0,transparent 50%);background-size:20px 20px;pointer-events:none}
+#cert-card .cert-top{margin-bottom:16px;border-bottom:1px solid #3a3936;padding-bottom:16px}
+#cert-card .cert-org{font-size:8px;letter-spacing:.25em;color:#c8861a;text-transform:uppercase;margin-bottom:4px}
+#cert-card .cert-main-title{font-size:16px;font-weight:900;color:#e8e4dc;letter-spacing:.05em;margin-bottom:2px}
+#cert-card .cert-main-title-en{font-size:9px;color:#8a7a5c;letter-spacing:.2em;text-transform:uppercase}
+#cert-card .cert-portrait{width:100%;height:220px;object-fit:cover;margin-bottom:16px;background:#2e2d2a;display:flex;align-items:center;justify-content:center;font-size:60px;border:1px solid #3a3936}
+#cert-card .cert-id-row{display:flex;justify-content:space-between;font-size:9px;color:#8a7a5c;font-family:'Courier New',monospace;letter-spacing:.12em;margin-bottom:16px}
+#cert-card .cert-gene-block{text-align:center;margin-bottom:16px;border:1px solid #3a3936;padding:16px}
+#cert-card .cert-gene-name{font-size:22px;font-weight:900;color:#e8e4dc;margin-bottom:2px}
+#cert-card .cert-gene-name-en{font-size:9px;letter-spacing:.25em;color:#c8861a;text-transform:uppercase;margin-bottom:8px}
+#cert-card .cert-batch{font-size:9px;color:#8a7a5c;letter-spacing:.12em}
+#cert-card .cert-rarity{font-size:10px;color:#c8861a;font-family:'Courier New',monospace;margin-top:6px}
+#cert-card .cert-mix{margin-bottom:16px}
+#cert-card .cert-mix-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+#cert-card .cert-mix-label{font-size:8px;color:#8a7a5c;width:60px;font-family:'Courier New',monospace;letter-spacing:.08em}
+#cert-card .cert-mix-bar{flex:1;height:4px;background:#2e2d2a}
+#cert-card .cert-mix-fill{height:4px;background:#c8861a}
+#cert-card .cert-mix-pct{font-size:8px;color:#8a7a5c;width:28px;text-align:right;font-family:'Courier New',monospace}
+#cert-card .cert-status{background:rgba(200,134,26,.08);border:1px solid rgba(200,134,26,.2);padding:10px 14px;font-size:9px;color:#c8861a;font-family:'Courier New',monospace;letter-spacing:.1em;margin-bottom:16px;line-height:1.8}
+#cert-card .cert-footer{border-top:1px solid #3a3936;padding-top:12px;display:flex;justify-content:space-between;align-items:flex-end}
+#cert-card .cert-sign{font-size:8px;color:#8a7a5c;line-height:1.8}
+#cert-card .cert-qr{width:40px;height:40px;background:#2e2d2a;border:1px solid #3a3936;display:flex;align-items:center;justify-content:center;font-size:20px}
+#cert-card .cert-disclaimer{font-size:7px;color:#4a4a45;text-align:center;margin-top:12px;line-height:1.6}
+/* Terran cert */
+#cert-card.terran-cert .cert-top{border-bottom-color:#8a2f23}
+#cert-card.terran-cert .cert-org{color:#8a2f23}
+#cert-card.terran-cert .cert-gene-block{border-color:#8a2f23;background:rgba(138,47,35,.05)}
+#cert-card.terran-cert .cert-gene-name-en{color:#8a2f23}
+#cert-card.terran-cert .cert-status{background:rgba(138,47,35,.08);border-color:rgba(138,47,35,.3);color:#c07060}
+#cert-card.terran-cert .cert-rarity{color:#c07060}
+
+/* RESPONSIVE */
+@media(max-width:480px){
+  .landing-title{font-size:28px}
+  .gene-name{font-size:26px}
+  .skills-grid{grid-template-columns:1fr}
+  #cert-card{width:340px}
+}
+</style>
+</head>
+<body>
+<div class="fog"></div>
+
+<div class="sys-header">
+  <div class="sys-logo">PROJECT RECALL // 母星召回计划</div>
+  <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+</div>
+
+<div id="app">
+  <!-- LANDING -->
+  <div class="screen active" id="screen-landing">
+    <div class="landing-wrap">
+      <div class="landing-code tech">ARCHIVE ACCESS PORT // VER 3.1 // CLASSIFICATION: LEAKED</div>
+      <h1 class="landing-title" data-i18n="landingTitle">外星基因<br>检测报告</h1>
+      <div class="landing-sub" data-i18n="landingSubtitle">Alien DNA Scan · Project Recall</div>
+      <div class="story-block">
+        <p data-i18n="storyP1">人类基因组计划完成后，科学家确认：人类DNA中约有8%来自远古病毒插入，功能不明，长期被归档为"垃圾DNA"。<span style="font-size:12px;color:var(--accent)">🔬</span></p>
+        <p data-i18n="storyP2">传说中，一个代号「母星召回计划」的跨国小组在这8%里识别出了<strong style="color:var(--white)">12段无法用地球演化解释的休眠序列</strong>——像不同厂商留在产品里的出厂标记。小组建立了加密档案库，持续登记携带者。<span style="font-size:12px;color:var(--sand)">📜</span></p>
+        <p data-i18n="storyP3">现在，档案库的自助扫描端口"泄露"了。你面前的，就是那个端口。</p>
+        <p data-i18n="storyP4">扫一下，看看你是哪个星球的批次。</p>
+      </div>
+      <button class="btn-primary" onclick="startScan()" data-i18n="btnAccess">⊕ 接入扫描端口</button>
+      <a class="btn-refuse" onclick="refuseAccess()" data-i18n="btnRefuse">拒绝接入</a>
+      <div class="disclaimer" data-i18n="disclaimer">本扫描为娱乐内容，档案局并不存在（大概）。📜标签为都市传说，🎬为科幻虚构，仅🔬标签为真实科学。</div>
+    </div>
+  </div>
+
+  <!-- REFUSE RESULT (Terran Path A) -->
+  <div class="screen" id="screen-terran-a">
+    <div class="terran-wrap">
+      <div class="result-header">
+        <span class="tech">ANOMALY DETECTED // SEQ.00 // UNREGISTERED</span>
+        <span class="result-stamp" style="background:var(--red)" data-i18n="stampDraft">征召令</span>
+      </div>
+      <div class="terran-notice">
+        <div class="tn-label" data-i18n="terranNoticeLabel">⚠ 异常检测 ANOMALY DETECTED</div>
+        <div class="tn-text" data-i18n="terranNoticeText">受测者拒绝授权……正在关闭端口……<br>等等。<br>检测到异常：你抵抗了好奇心。</div>
+      </div>
+      <div class="portrait-placeholder" style="font-size:80px;margin-bottom:24px;border-color:var(--red)" data-label="IRON-BLOODED TERRAN">🌍</div>
+      <div class="gene-name" style="color:var(--white)" data-i18n="terranTitle">铁血地球人</div>
+      <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH A</div>
+      <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
+      <div style="margin:24px 0">
+        <div class="terran-draft">
+          <p data-i18n="terranDraftText">受测者（未登记）：<br><br>你刚刚通过了母星召回计划唯一真正的测试。<br><br>12段外星序列的携带者，没有一个能拒绝这次扫描——好奇心写在他们的基因里。<br><br>能对"你是谁"这个问题说不的，全档案库只有0.1%。<br><br><span class="code">纯血地球人，确认。</span><br><br>兹征召你加入地球联盟军。窗口期开启之日，地球交给你了。<br><br>代号：<strong>铁血地球人</strong></p>
+        </div>
+        <div class="section-label" data-i18n="sectionPersonality">性格解读</div>
+        <div class="personality-text" data-i18n="terranPersonality">不靠血统、不等召唤、不信救世主。别人觉醒你扛事。全场最该被外星人忌惮的就是你。当窗口期开启、所有携带者都听见母星召唤的那天，留下来守住地球的，是你。</div>
+        <div class="section-label" data-i18n="sectionMedia">档案局推荐研读材料</div>
+        <ul class="media-list">
+          <li><span class="label-tag">🎬</span>《独立日》《流浪地球》——人类不靠外星人，自己扛</li>
+        </ul>
+      </div>
+      <button class="btn-cert" onclick="showCert('terran-a')" data-i18n="btnCert">领取地球联盟军征召令</button>
+      <button class="btn-share" onclick="startScan()" data-i18n="btnInfiltrate">↳ 潜入档案局，看看他们到底在测什么</button>
+      <div class="disclaimer" style="margin-top:24px" data-i18n="disclaimer">本扫描为娱乐内容，档案局并不存在（大概）。</div>
+    </div>
+  </div>
+
+  <!-- ID GENERATION -->
+  <div class="screen" id="screen-idgen">
+    <div class="idgen-wrap">
+      <span class="tech">ARCHIVE REGISTRATION SYSTEM // INITIALIZING</span>
+      <div class="idgen-text" id="idgenText">正在为受测者分配档案编号……</div>
+      <div class="idgen-id" id="idgenId"><span class="cursor">█</span></div>
+    </div>
+  </div>
+
+  <!-- SEGMENT INTRO -->
+  <div class="screen" id="screen-seg">
+    <div class="seg-wrap">
+      <div class="seg-num" id="segNum"></div>
+      <div class="seg-title" id="segTitle"></div>
+      <div class="seg-desc" id="segDesc"></div>
+    </div>
+  </div>
+
+  <!-- SYSTEM NOTICE -->
+  <div class="screen" id="screen-notice">
+    <div class="notice-wrap">
+      <div class="notice-text" id="noticeText"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="screen" id="screen-quiz">
+    <div class="quiz-wrap">
+      <div class="progress-bar" id="progressBar"></div>
+      <div class="prog-label" id="progLabel"></div>
+      <div class="q-num" id="qNum"></div>
+      <div class="q-text" id="qText"></div>
+      <div class="options" id="qOptions"></div>
+    </div>
+  </div>
+
+  <!-- SCANNING -->
+  <div class="screen" id="screen-scan">
+    <div class="scan-wrap">
+      <div class="scan-header" data-i18n="scanHeader">SEQUENCE ANALYSIS // MOTHERSTAR RECALL DATABASE</div>
+      <div class="scan-terminal" id="scanTerminal"></div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div class="result-wrap" id="resultContent"></div>
+  </div>
+
+  <!-- TERRAN B (silent sequence) -->
+  <div class="screen" id="screen-terran-b">
+    <div class="terran-wrap">
+      <div class="result-header">
+        <span class="tech">SCAN COMPLETE // ANOMALY: SILENT SEQUENCE</span>
+        <span class="result-stamp" style="background:var(--red)" data-i18n="stampPure">纯血认证</span>
+      </div>
+      <div class="portrait-placeholder" style="font-size:80px;margin-bottom:24px;border-color:var(--red)" data-label="IRON-BLOODED TERRAN">🌍</div>
+      <div class="gene-name" data-i18n="terranTitle">铁血地球人</div>
+      <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH B · SILENT SEQUENCE</div>
+      <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
+      <div style="margin:24px 0">
+        <div class="terran-draft">
+          <p id="terranBArchive"></p>
+          <p style="margin-top:16px" data-i18n="terranBText">受测者 <span id="terranBId" class="code"></span>：你的基因组中，未检测到任何外星签名。<br><br>在这个人均星际混血的档案库里，你是0.1%的纯血地球人。<br><br>档案局对你只有一条备注——<br><br>当窗口期开启、所有携带者都听见母星召唤的那天，留下来守住地球的，是你。<br><br>代号：<strong>铁血地球人</strong></p>
+        </div>
+        <div class="personality-text" data-i18n="terranPersonality">不靠血统、不等召唤、不信救世主。别人觉醒你扛事。全场最该被外星人忌惮的就是你。</div>
+        <div class="section-label" data-i18n="sectionMedia">档案局推荐研读材料</div>
+        <ul class="media-list">
+          <li><span class="label-tag">🎬</span>《独立日》《流浪地球》——人类不靠外星人，自己扛</li>
+        </ul>
+      </div>
+      <button class="btn-cert" onclick="showCert('terran-b')" data-i18n="btnCertTerranB">领取纯血地球人认证书</button>
+      <div class="disclaimer" style="margin-top:24px" data-i18n="disclaimer">本扫描为娱乐内容，档案局并不存在（大概）。</div>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATE MODAL -->
+<div class="cert-overlay" id="certOverlay">
+  <button class="cert-close" onclick="closeCert()">✕</button>
+  <div class="cert-container">
+    <div id="cert-card">
+      <div class="cert-bg-pattern"></div>
+      <div class="cert-top">
+        <div class="cert-org">母星召回计划 MOTHERSTAR RECALL PROGRAM</div>
+        <div class="cert-main-title" id="certMainTitle">召回血统认证书</div>
+        <div class="cert-main-title-en" id="certMainTitleEn">CERTIFICATE OF RECALL BLOODLINE</div>
+      </div>
+      <div class="cert-portrait" id="certPortrait">👽</div>
+      <div class="cert-id-row">
+        <span id="certIdSpan">RC-XXXXXX</span>
+        <span id="certDateSpan"></span>
+      </div>
+      <div class="cert-gene-block">
+        <div class="cert-gene-name" id="certGeneName"></div>
+        <div class="cert-gene-name-en" id="certGeneNameEn"></div>
+        <div class="cert-batch" id="certBatch"></div>
+        <div class="cert-rarity" id="certRarity"></div>
+      </div>
+      <div class="cert-mix" id="certMix"></div>
+      <div class="cert-status" id="certStatus"></div>
+      <div class="cert-footer">
+        <div class="cert-sign">
+          <div>母星召回计划档案局</div>
+          <div>第十二序列管理处</div>
+          <div style="font-family:serif;font-size:14px;color:#4a4a45;margin-top:4px">ꜱɪɢɴ: Ͻ⌈ℸ∿ℵ</div>
+        </div>
+        <div class="cert-qr">📡</div>
+      </div>
+      <div class="cert-disclaimer">本认证书为娱乐内容 · 档案局并不存在（大概）· 血统验真通道 PROJECT-RECALL.TEST</div>
+    </div>
+    <div class="cert-actions">
+      <button class="btn-cert" onclick="downloadCert()" data-i18n="btnDownload">保存认证书图片</button>
+      <button class="btn-share" onclick="closeCert()" data-i18n="btnBack">返回档案</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA LAYER
+// ============================================================
+
+const GENES = ['grey','reptilian','anunnaki','pleiadian','sirian','arcturian','heptapod','trisolaran','lyran','orion','andromedan','mantis'];
+
+const GENE_DATA = {
+  grey: {
+    emoji:'👽', rarity:14,
+    zh:{name:'灰人基因',en:'The Grey',origin:'泽塔网状星座（Zeta Reticuli）· 距地球约39光年',batch:'批次：泽塔网状星座 · 第39光年产区',tags:'🔬 真实双星系统',archive:'1947罗斯威尔事件、51区、贝蒂·希尔星图 📜',keywords:'绝对理性 / 观察者 / 情感节能模式 / 效率至上',personality:'你看人类的方式像在做田野调查；社交耗电，独处充电；情绪稳定到让朋友怀疑你是不是没有情绪——其实你只是把算力都给了思考。',skills:['田野调查级观察力','社交能耗极低','数据归因天赋','多线程思维'],weak:'情绪带宽占用过低，朋友以为你不在意',ally:'三体基因',enemy:'昴宿星人基因',media:['🎬《X档案》','🎬《第四类接触》'],allyId:'trisolaran',enemyId:'pleiadian'},
+    en:{name:'Grey Gene',personality:'You observe humans like a field researcher. Social interactions drain you; solitude recharges you. Your emotional stability is so extreme that friends wonder if you feel anything at all — you just redirect all processing power to thinking.',skills:['Field-study-level observation','Ultra-low social energy consumption','Data attribution instinct','Multi-threaded cognition'],weak:'Emotional bandwidth so low that friends assume you don\'t care'}
+  },
+  reptilian: {
+    emoji:'🦎', rarity:7,
+    zh:{name:'蜥蜴人基因',en:'The Reptilian',origin:'传说地心文明关联天龙座Alpha Draconis',batch:'批次：地心文明 · 深层产区',tags:'📜 莱瑟塔档案 / 大卫·艾克理论',archive:'1999年《莱瑟塔档案》访谈、地底洞穴文明传说 📜',keywords:'生存大师 / 权力嗅觉 / 冷静谨慎 / 外冷内忠',personality:'你进任何房间都会先找出口和利害关系；别人觉得你"城府深"，其实你只是装了出厂自带的风险评估系统；一旦认定自己人，忠诚得可怕。',skills:['全场风险扫描','出口识别本能','人心利害感知','绝对忠诚协议'],weak:'过度评估威胁，容易让新朋友感到被审视',ally:'阿努纳奇基因',enemy:'天琴座基因',media:['🎬《V星入侵》','📜莱瑟塔访谈原文'],allyId:'anunnaki',enemyId:'lyran'},
+    en:{name:'Reptilian Gene',personality:'You clock exits and power dynamics the moment you enter any room. People call you "guarded" — you just have a factory-installed risk assessment system. Once you decide someone is yours, your loyalty is terrifying.',skills:['Full-room threat scanning','Exit identification reflex','Reading motives and leverage','Absolute loyalty protocol'],weak:'Over-assessing threats makes new acquaintances feel interrogated'}
+  },
+  anunnaki: {
+    emoji:'𒀭', rarity:5,
+    zh:{name:'阿努纳奇基因',en:'The Anunnaki',origin:'传说尼比鲁星（Nibiru）· 轨道周期3600年 📜 / 关联"第九行星"假说 🔬',batch:'批次：尼比鲁 · 第3600年轨道产区',tags:'📜 苏美尔泥板 · 🔬 第九行星假说',archive:'苏美尔楔形文字泥板、撒迦利亚·西琴《第十二天体》、北纬30度文明带 📜',keywords:'天生领袖 / 建造者 / 秩序制定者 / 蓝图脑',personality:'传说阿努纳奇用基因工程创造了人类来为他们工作——而你大概继承了"派活"的那一半基因。你受不了混乱，看到烂摊子就忍不住想重建秩序。',skills:['蓝图级规划思维','秩序重建本能','领导力天赋','资源调度算法'],weak:'对混乱零容忍，有时候把松弛误判为问题',ally:'蜥蜴人基因',enemy:'仙女座基因',media:['🎬《2001太空漫游》黑石','🎬《普罗米修斯》工程师'],allyId:'reptilian',enemyId:'andromedan'},
+    en:{name:'Anunnaki Gene',personality:'Legend says the Anunnaki engineered humans to do their work — you probably inherited the half that delegates. You can\'t stand disorder; you see a mess and instinctively start rebuilding systems.',skills:['Blueprint-level planning mind','Order restoration instinct','Natural leadership talent','Resource allocation algorithm'],weak:'Zero tolerance for chaos — you sometimes mistake relaxation for a problem'}
+  },
+  pleiadian: {
+    emoji:'✨', rarity:12,
+    zh:{name:'昴宿星人基因',en:'The Pleiadian',origin:'昴宿星团（M45）· 金牛座 · 距地球约444光年 🔬',batch:'批次：七姐妹星团 · 第444光年产区',tags:'🔬 肉眼可见星团 📜 北欧型外星人接触案',archive:'北欧型外星人目击报告、比利·迈尔接触案、新时代"光之工作者"传说 📜',keywords:'共情雷达 / 治愈系 / 理想主义 / 高敏感',personality:'你能瞬间感知全场谁不开心；朋友的崩溃热线；缺点是太容易吸收别人的情绪，需要定期"断网净化"。',skills:['全场情绪感知雷达','危机倾听协议','高密度共情带宽','疗愈场域生成'],weak:'情绪海绵体质，吸收过多需要定期排空',ally:'天狼星人基因',enemy:'灰人基因',media:['🎬《E.T.》','🎬《第三类接触》'],allyId:'sirian',enemyId:'grey'},
+    en:{name:'Pleiadian Gene',personality:'You instantly sense who\'s unhappy in any room. You\'re everyone\'s crisis hotline. Your weakness: you absorb others\' emotions too easily and need regular "offline cleanses."',skills:['Full-room emotional radar','Crisis listening protocol','High-bandwidth empathy','Healing field generation'],weak:'Emotional sponge — absorbs too much, needs periodic draining'}
+  },
+  sirian: {
+    emoji:'🌊', rarity:9,
+    zh:{name:'天狼星人基因',en:'The Sirian',origin:'天狼星B——真实存在的白矮星 🔬 · 1862年才被现代天文学确认',batch:'批次：天狼星B · 白矮星残骸产区',tags:'🔬 天狼星B白矮星 📜 多贡部落天狼星知识',archive:'西非多贡部落天狼星B知识之谜、古埃及天狼星崇拜（索普德特女神）📜',keywords:'古老灵魂 / 知识守护者 / 直觉准到可怕 / 神秘学体质',personality:'你对古文明、未解之谜有天然的亲近感，仿佛在"复习"而不是"学习"；直觉常常先于逻辑到达正确答案。',skills:['古知识共振天赋','直觉优先于逻辑','神秘系统识别','水元素感知'],weak:'太依赖直觉，偶尔跳过必要的逻辑验证',ally:'昴宿星人基因',enemy:'螳螂人基因',media:['🎬《星际之门》','🎬《沙丘》'],allyId:'pleiadian',enemyId:'mantis'},
+    en:{name:'Sirian Gene',personality:'Ancient civilizations and unsolved mysteries feel familiar, like revision rather than learning. Your intuition reaches correct answers before your logic does.',skills:['Ancient knowledge resonance','Intuition over logic','Mystical pattern recognition','Water element sensing'],weak:'Over-relying on intuition, occasionally skipping necessary logical validation'}
+  },
+  arcturian: {
+    emoji:'🔮', rarity:7,
+    zh:{name:'大角星人基因',en:'The Arcturian',origin:'大角星（Arcturus）· 牧夫座 · 距地球约37光年 🔬',batch:'批次：牧夫座 · 第37光年产区',tags:'🔬 北天最亮恒星之一 📜 埃德加·凯西预言',archive:'埃德加·凯西预言中的"最先进文明"、通灵文献五维存在、神圣几何传说 📜',keywords:'高维思考 / 技术与灵性双修 / 抽象控 / 跳跃式洞察',personality:'你思考问题经常跳过中间步骤直达结论，让人跟不上；对数学之美、几何、宇宙学有迷之兴趣；身边电子设备偶尔出现玄学故障。',skills:['跳跃式洞察算法','神圣几何感知','技术灵性双修','五维视角切换'],weak:'思维跳跃太快，解释给别人时中间步骤全丢了',ally:'七肢桶基因',enemy:'猎户座基因',media:['🎬《星际穿越》五维空间','🎬《超时空接触》'],allyId:'heptapod',enemyId:'orion'},
+    en:{name:'Arcturian Gene',personality:'You skip intermediate steps and jump straight to conclusions, leaving others behind. You have an inexplicable fascination with mathematical beauty, geometry, and cosmology. Electronics near you occasionally glitch.',skills:['Skip-step insight algorithm','Sacred geometry sensing','Tech-spiritual dual cultivation','5D perspective switching'],weak:'Thinking leaps too fast — explaining to others loses all the middle steps'}
+  },
+  heptapod: {
+    emoji:'🐙', rarity:8,
+    zh:{name:'七肢桶基因',en:'The Heptapod',origin:'🎬《降临》/ 特德·姜《你一生的故事》· 语言学锚：萨丕尔-沃夫假说 🔬',batch:'批次：非线性时空 · 全时态产区',tags:'🔬 萨丕尔-沃夫假说 📜 预知梦报告',archive:'预知梦报告、似曾相识（Déjà vu）现象、非线性时间感知 📜',keywords:'宿命感 / 语言天赋 / 预感型直觉 / 活在所有时态里',personality:'你经常梦到的事后来真的发生；对语言、符号、隐喻极其敏感；有时会突然"想起未来"，然后假装没事。',skills:['预知梦接收器','符号语言解码','非线性时间感知','全时态并发处理'],weak:'档案备注：该受测者可能早已知道这份报告的内容',ally:'大角星人基因',enemy:'三体基因',media:['🎬《降临》','📖特德·姜《你一生的故事》'],allyId:'arcturian',enemyId:'trisolaran'},
+    en:{name:'Heptapod Gene',personality:'Things you dream about tend to happen. You\'re hypersensitive to language, symbols, and metaphor. Sometimes you suddenly "remember the future" and pretend it\'s nothing.',skills:['Precognitive dream receptor','Symbolic language decoding','Non-linear time perception','All-tense concurrent processing'],weak:'Archive note: this subject may already know this report\'s contents'}
+  },
+  trisolaran: {
+    emoji:'☀️', rarity:9,
+    zh:{name:'三体基因',en:'The Trisolaran',origin:'半人马座α三星系统 · 比邻星b系外行星（真实确认）🔬',batch:'批次：半人马座α · 第4.2光年产区',tags:'🔬 最近恒星系 · 比邻星b确认宜居带',archive:'🎬 刘慈欣《三体》· 黑暗森林假说作为费米悖论解之一',keywords:'极致理性 / 危机意识 / 坦率到不会撒谎 / 执行力恐怖',personality:'你永远有Plan B到Plan D；说话直接，思维几乎"透明"，不擅长也不屑于人类的弯弯绕；乱纪元来了你大概是活到最后的那个。',skills:['多重应急预案系统','零欺骗通信协议','极端环境生存算法','战略透明思维'],weak:'话太直，经常在不需要战略分析的场合进行战略分析',ally:'灰人基因',enemy:'七肢桶基因',media:['🎬《三体》三部曲','📖刘慈欣《三体》'],allyId:'grey',enemyId:'heptapod'},
+    en:{name:'Trisolaran Gene',personality:'You always have Plans B through D ready. You speak directly, think almost "transparently," and have no patience for human circumlocution. When the Chaotic Era comes, you\'re the last one standing.',skills:['Multi-tier contingency system','Zero-deception communication protocol','Extreme-environment survival algorithm','Strategic transparent thinking'],weak:'Too direct — you perform strategic analysis in situations that don\'t require it'}
+  },
+  lyran: {
+    emoji:'🐈', rarity:6,
+    zh:{name:'天琴座基因',en:'The Lyran',origin:'天琴座主星织女星（Vega）· 距地球25光年 🔬 · 曾是约1.2万年前的北极星',batch:'批次：天琴座 · 织女星产区 · 初代固件',tags:'🔬 织女星 📜 人形种族摇篮传说',archive:'星际种子谱系"最古老人形种族的摇篮"、猫科人形种族传说、天琴-天龙战争大流散 📜',keywords:'初代浪子 / 猫系独立 / 开拓者 / "别管我但我罩你"',personality:'你携带的是人形种族的出厂初代固件；讨厌被安排，但开荒能力一流；社交像猫——亲近是恩赐，距离是常态；朋友落难时却第一个到场。',skills:['荒野开拓一流','猫系自主导航','紧急救援触发器','初代独立协议'],weak:'讨厌被安排，有时连自己的好计划也不想照着走',ally:'仙女座基因',enemy:'蜥蜴人基因',media:['🎬《第五元素》','🎬《星球大战》韩·索罗式浪子'],allyId:'andromedan',enemyId:'reptilian'},
+    en:{name:'Lyran Gene',personality:'You carry the factory firmware of the first humanoid species. You hate being managed but excel at pioneering. Your social life is cat-like — closeness is a gift, distance is the default. When friends are in crisis, you\'re first on scene.',skills:['Frontier pioneering excellence','Cat-mode autonomous navigation','Emergency rescue trigger','First-gen independence protocol'],weak:'Hates being told what to do — sometimes ignores even your own good plans'}
+  },
+  orion: {
+    emoji:'⚔️', rarity:8,
+    zh:{name:'猎户座基因',en:'The Orion',origin:'猎户座腰带三星（参宿一、二、三）🔬 · 猎户座相关性理论：吉萨金字塔与猎户腰带对齐 🔬📜',batch:'批次：猎户座腰带 · 三星联排产区',tags:'🔬 猎户腰带三星 🔬📜 金字塔-猎户对齐假说',archive:'星际种子传说"猎户战争"、以心智力量与意志对抗著称的文明 📜',keywords:'竞技者 / 意志力 / 辩论之魂 / 在对抗中升级',personality:'你天生不服输，被质疑反而来劲；辩论从来没输过（至少你自己这么认为）；缺点是容易把人生过成排位赛，连休息都要卷出效率。',skills:['逆境激活机制','辩论无败绩协议','意志力超载模式','对抗中的自我升级'],weak:'容易把人生过成排位赛，连休息都要卷出效率',ally:'螳螂人基因',enemy:'大角星人基因',media:['🎬《安德的游戏》','🎬《星河战队》'],allyId:'mantis',enemyId:'arcturian'},
+    en:{name:'Orion Gene',personality:'You\'re born not to yield. Being challenged only makes you stronger. You\'ve never lost a debate (at least in your own mind). Your weakness: you turn your entire life into a ranked match, even optimizing rest.',skills:['Adversity activation mechanism','Undefeated debate protocol','Willpower overload mode','Self-upgrade through opposition'],weak:'Turns life into a ranked competition — even optimizes leisure time for efficiency'}
+  },
+  andromedan: {
+    emoji:'🌌', rarity:5,
+    zh:{name:'仙女座基因',en:'The Andromedan',origin:'仙女座星系（M31）· 距地球254万光年 🔬 · 正以每秒约110公里速度向银河系靠近',batch:'批次：仙女座星系 · 254万光年产区',tags:'🔬 本星系群最大星系 · 正在靠近',archive:'接触者亚历克斯·科利尔的"仙女座议会"传说 · 爬虫人议程头号反对者 📜',keywords:'自由至上 / 规则过敏 / 流浪者 / 反权威',personality:'你对"必须"和"应该"这两个词生理性反感；说走就走浓度超标；哪里有控制，哪里就有你的逆反；但你的叛逆不是为了破坏，是为了证明另一条路存在。',skills:['说走就走执行力','规则漏洞识别','自由意志防火墙','另辟蹊径算法'],weak:'对规则过敏，有时连好规则也先反再说',ally:'天琴座基因',enemy:'阿努纳奇基因',media:['🎬《银河系漫游指南》（带着毛巾去流浪）'],allyId:'lyran',enemyId:'anunnaki',note:'🔬真实彩蛋：你的老家正在以每秒110公里赶来接你的路上'},
+    en:{name:'Andromedan Gene',personality:'You have a physiological allergy to "must" and "should." Your spontaneity is off the charts. Wherever there is control, there is your resistance. But your rebellion isn\'t to destroy — it\'s to prove another path exists.',skills:['Spontaneous execution ability','Rule loophole detection','Free will firewall','Alternative route algorithm'],weak:'Rule-averse — sometimes rebels against good rules just on principle'}
+  },
+  mantis: {
+    emoji:'🦗', rarity:4,
+    zh:{name:'螳螂人基因',en:'The Mantis',origin:'报告中坐标加密：██████',batch:'批次：坐标加密 · ██████产区',tags:'📜 劫持报告高频出现的"主刀医生"形象',archive:'劫持报告中以"主刀医生"角色出现的螳螂形存在——安静、精密、不怒自威 📜',keywords:'极致专注 / 工匠精神 / 细节即正义 / 安静的大佬',personality:'你能在一件事上钻到别人怀疑人生；话少，但出手即成品；朋友找你修东西、改方案、抠细节，因为你看得见别人看不见的那0.1毫米。',skills:['0.1毫米精度感知','单点极致专注协议','出手即成品标准','主刀医生级静默'],weak:'话少到有时候别人以为你没在听——其实你已经把方案想好了',ally:'猎户座基因',enemy:'天狼星人基因',media:['🎬《火星救援》（用工程细节把自己种活）'],allyId:'orion',enemyId:'sirian'},
+    en:{name:'Mantis Gene',personality:'You drill into one thing until others question their own abilities. You speak rarely, but when you produce, it\'s finished goods. Friends come to you for fixes, revisions, and fine details, because you see the 0.1mm everyone else misses.',skills:['0.1mm precision sensing','Single-point extreme focus protocol','Finished-goods-only output standard','Surgeon-level silent presence'],weak:'So quiet people think you\'re not listening — you\'ve already solved the problem in your head'}
+  }
+};
+
+// Questions with scoring
+// Format: { zh, en, tag, options: [{zh, en, scores:{gene:points,...}}] }
+const QUESTIONS = [
+  {
+    zh:'深夜你独自抬头看星空，第一反应是：',
+    en:'Alone under the night sky, your first instinct is:',
+    seg:1,
+    options:[
+      {zh:'默默估算最亮那颗星离我们多少光年',en:'Silently calculating how many light-years away the brightest star is',scores:{grey:2,trisolaran:1}},
+      {zh:'感觉某颗星也在"回望"你，莫名熟悉',en:'Feeling a star gazing back at you — strangely familiar',scores:{pleiadian:2,sirian:1}},
+      {zh:'想到费米悖论：宇宙这么大，他们都在哪儿？',en:'Thinking of the Fermi Paradox: the universe is so vast — where is everyone?',scores:{trisolaran:2,grey:1}},
+      {zh:'涌起一种说不清的乡愁，好像很久以前离开过那里',en:'Feeling an inexplicable homesickness, as if you left there long ago',scores:{lyran:2,heptapod:1}}
+    ]
+  },
+  {
+    zh:'你最常做哪种类型的梦？',
+    en:'What type of dream do you have most often?',
+    seg:1,
+    options:[
+      {zh:'飞行——挣脱一切，俯瞰城市和地球',en:'Flying — breaking free, looking down at the city and Earth',scores:{andromedan:2,lyran:1}},
+      {zh:'梦里被注视，醒来记不清细节但莫名疲惫 📜',en:'Being watched in dreams, waking up exhausted with hazy details 📜',scores:{grey:2,mantis:1}},
+      {zh:'预知梦——梦到的事后来真的发生了',en:'Prophetic dreams — things you dream about actually happen',scores:{heptapod:2,sirian:1}},
+      {zh:'宏大史诗：建造巨型工程、大洪水、远古星际战争',en:'Epic sagas: building megastructures, great floods, ancient interstellar wars',scores:{anunnaki:2,orion:1}}
+    ]
+  },
+  {
+    zh:'免费机票任选一条线路，你选：',
+    en:'Free ticket — choose your route:',
+    seg:1,
+    options:[
+      {zh:'埃及金字塔 + 苏美尔遗址考古深度游 🔬📜',en:'Egypt pyramids + Sumerian ruins archaeology deep dive 🔬📜',scores:{anunnaki:2,orion:1}},
+      {zh:'美国51区 + 罗斯威尔外星人公路之旅 📜',en:'Area 51 + Roswell alien highway road trip 📜',scores:{grey:2,andromedan:1}},
+      {zh:'西藏或秘鲁高原，去人少星多的地方待着',en:'Tibetan or Peruvian highlands — somewhere remote, starry, and solitary',scores:{arcturian:2,pleiadian:1}},
+      {zh:'深海潜水，去看传说中的海底遗迹 📜',en:'Deep-sea diving to explore legendary underwater ruins 📜',scores:{reptilian:2,sirian:1}},
+      {zh:'不订回程票的单人环球流浪',en:'Solo world-wandering with no return ticket booked',scores:{andromedan:2,lyran:1}}
+    ]
+  },
+  {
+    zh:'朋友深夜找你哭诉，你的真实反应：',
+    en:'A friend calls at midnight, sobbing. Your real response:',
+    seg:2,
+    options:[
+      {zh:'先抱住再说，情绪比解决问题重要',en:'Hold them first — emotions matter more than solutions',scores:{pleiadian:2,lyran:1}},
+      {zh:'三分钟内给出问题拆解和行动方案',en:'Deliver a problem breakdown and action plan within three minutes',scores:{trisolaran:2,mantis:1}},
+      {zh:'安静听完，但感觉自己把对方的情绪"吸"过来了',en:'Listen quietly, but feel their emotions seeping into you',scores:{arcturian:2,orion:1}},
+      {zh:'表面安慰，大脑后台同步评估这事的前因后果和利害',en:'Comforting on the surface while your brain background-processes the causes and consequences',scores:{reptilian:2,anunnaki:1}}
+    ]
+  },
+  {
+    zh:'你对时间的真实感受：',
+    en:'Your honest relationship with time:',
+    seg:2,
+    options:[
+      {zh:'时间是线性资源，规划好就能掌控',en:'Time is a linear resource — plan it and you control it',scores:{anunnaki:2,lyran:1}},
+      {zh:'频繁Déjà vu，总觉得这一幕早就经历过',en:'Frequent déjà vu — this moment always feels like it\'s happened before',scores:{heptapod:2,sirian:1}},
+      {zh:'一专注就时间蒸发，回过神已是深夜',en:'Time evaporates when you focus — you look up and it\'s midnight',scores:{mantis:2,arcturian:1}},
+      {zh:'凌晨三点最清醒，白天像在待机省电',en:'Sharpest at 3 AM; daytime feels like standby mode',scores:{reptilian:2,grey:1}}
+    ]
+  },
+  {
+    zh:'如果"Wow!信号"再次出现并被破译，你最希望它的内容是：',
+    en:'If the Wow! Signal were received again and decoded, what would you most want it to say?',
+    en_tag:'🔬 1977年真实接收、至今未解的窄频电波',
+    zh_tag:'🔬 1977年真实接收、至今未解的窄频电波',
+    seg:2,
+    options:[
+      {zh:'一份大统一理论的完整推导',en:'A complete derivation of the Grand Unified Theory',scores:{arcturian:2,grey:1}},
+      {zh:'"不要回答！不要回答！不要回答！" 📖',en:'"Do not answer! Do not answer! Do not answer!" 📖',scores:{trisolaran:2,reptilian:1}},
+      {zh:'关于人类真实起源的完整档案',en:'A complete archive of humanity\'s true origins',scores:{sirian:2,orion:1}},
+      {zh:'"别怕，我们一直都在你们身边。"',en:'"Don\'t be afraid — we\'ve always been with you."',scores:{pleiadian:2,andromedan:1}}
+    ]
+  },
+  {
+    zh:'你的社交模式更接近：',
+    en:'Your social pattern is closest to:',
+    seg:3,
+    options:[
+      {zh:'大场面如鱼得水，天然想主导节奏、喜欢赢',en:'Thriving in large settings, naturally steering the pace, loving to win',scores:{orion:2,anunnaki:1}},
+      {zh:'固定小圈子深聊，陌生场合自动隐身',en:'Deep talks in a small circle; auto-invisible in unfamiliar settings',scores:{reptilian:2,mantis:1}},
+      {zh:'全场谁情绪不对劲，你第一个察觉',en:'You\'re always first to sense who\'s emotionally off in the room',scores:{pleiadian:2,sirian:1}},
+      {zh:'喜欢站在边上观察人类，像做行为学记录',en:'Preferring to observe humans from the sideline, like a behavioral field note',scores:{grey:2,trisolaran:1}},
+      {zh:'想来就来想走就走，从不解释，猫一样',en:'Coming and going as you please, never explaining yourself — cat-mode',scores:{lyran:2,andromedan:1}}
+    ]
+  },
+  {
+    zh:'以下"身体异常"哪条最像你？',
+    en:'Which "physical anomaly" sounds most like you?',
+    en_tag:'📜 外星基因都市传说合集',
+    zh_tag:'📜 外星基因都市传说合集',
+    seg:3,
+    options:[
+      {zh:'血型罕见（如RH阴性），或蚊子从来不咬你 📜',en:'Rare blood type (e.g., RH-negative), or mosquitoes never bite you 📜',scores:{reptilian:2,anunnaki:1}},
+      {zh:'体温常年偏低、怕冷，手脚冰凉',en:'Perpetually low body temperature, cold hands and feet',scores:{grey:2,trisolaran:1}},
+      {zh:'对电子设备有玄学影响：路灯感应、手表走时异常',en:'Unexplained effects on electronics: streetlights react, watches malfunction',scores:{arcturian:2,heptapod:1}},
+      {zh:'直觉准到吓人，手机响之前就知道是谁',en:'Intuition so accurate it\'s unsettling — you know who\'s calling before the phone rings',scores:{sirian:2,pleiadian:1}},
+      {zh:'夜视力惊人，且猫狗见你秒变粘人精',en:'Exceptional night vision, and cats/dogs immediately become clingy around you',scores:{lyran:2,orion:1}}
+    ]
+  },
+  {
+    zh:'科幻作品里最戳你的设定：',
+    en:'The sci-fi concept that resonates with you most:',
+    seg:3,
+    options:[
+      {zh:'《降临》：学会外星语言后，你能看见自己的一生 🎬',en:'Arrival: learning an alien language lets you perceive your entire life 🎬',scores:{heptapod:2,lyran:1}},
+      {zh:'《三体》：宇宙是黑暗森林，文明之间保持沉默 📖',en:'Three-Body Problem: the universe is a dark forest; civilizations stay silent 📖',scores:{trisolaran:2,mantis:1}},
+      {zh:'《2001太空漫游》：黑石悄悄启蒙了人类文明 🎬',en:'2001: A Space Odyssey: the monolith quietly enlightened humanity 🎬',scores:{anunnaki:2,sirian:1}},
+      {zh:'《E.T.》/《第三类接触》：跨越星海的温柔相遇 🎬',en:'E.T. / Close Encounters: a tender meeting across the stars 🎬',scores:{pleiadian:2,grey:1}},
+      {zh:'《安德的游戏》：在残酷的模拟战争中淬炼成指挥官 🎬',en:'Ender\'s Game: forged into a commander through brutal simulated warfare 🎬',scores:{orion:2,andromedan:1}}
+    ]
+  },
+  {
+    zh:'人生突发危机时，你的应对模式：',
+    en:'When a life crisis hits without warning, your response mode is:',
+    seg:4,
+    options:[
+      {zh:'不慌，因为Plan B、C、D早就备好了',en:'No panic — Plans B, C, and D were already ready',scores:{reptilian:2,trisolaran:1}},
+      {zh:'跟着直觉走，不按常理出牌但往往是对的',en:'Follow intuition — unconventional, but usually right',scores:{heptapod:2,lyran:1}},
+      {zh:'召集所有人，分工、指挥、重建秩序',en:'Rally everyone, assign roles, direct, rebuild order',scores:{anunnaki:2,orion:1}},
+      {zh:'情绪一键关闭，像主刀医生一样精密处理',en:'One-click emotional shutdown — handle it with surgical precision',scores:{mantis:2,andromedan:1}}
+    ]
+  },
+  {
+    zh:'深夜刷到哪类内容你会停不下来？',
+    en:'Which content makes you lose track of time at midnight?',
+    seg:4,
+    options:[
+      {zh:'古文明未解之谜：苏美尔泥板、玛雅历法、三星堆',en:'Ancient civilization mysteries: Sumerian tablets, Maya calendar, Sanxingdui',scores:{sirian:2,anunnaki:1}},
+      {zh:'黑洞、量子力学、宇宙的尽头是什么',en:'Black holes, quantum mechanics, what lies at the universe\'s edge',scores:{arcturian:2,grey:1}},
+      {zh:'解密档案：51区、莱瑟塔访谈、五角大楼UAP报告 🔬📜',en:'Declassified files: Area 51, Lacerta interviews, Pentagon UAP reports 🔬📜',scores:{reptilian:2,orion:1}},
+      {zh:'濒死体验、前世记忆、星际种子觉醒测试',en:'Near-death experiences, past-life memories, starseed awakening tests',scores:{pleiadian:2,heptapod:1}},
+      {zh:'硬核修复/机械装配/极限解谜，看完一整个系列',en:'Hardcore repair/mechanical assembly/extreme puzzles — watching entire series',scores:{mantis:2,orion:1}}
+    ]
+  },
+  {
+    zh:'【最终扫描】窗口期开启那天，你获得一次向宇宙广播的机会。你发什么？',
+    en:'[FINAL SCAN] On the day the recall window opens, you get one broadcast to the universe. What do you send?',
+    zh_tag:'本题权重加倍',
+    en_tag:'Double weight question',
+    seg:4,
+    isLast:true,
+    options:[
+      {zh:'"我们是谁？我们从哪里来？"',en:'"Who are we? Where do we come from?"',scores:{sirian:3,anunnaki:1}},
+      {zh:'什么都不发。沉默是文明最好的保护色',en:'Nothing. Silence is civilization\'s best camouflage.',scores:{trisolaran:3,andromedan:1}},
+      {zh:'一段音乐和一组数学公式，像旅行者金唱片那样 🔬',en:'A piece of music and a set of equations, like the Voyager Golden Record 🔬',scores:{arcturian:3,mantis:1}},
+      {zh:'"可以顺路接我回家吗？"',en:'"Could you pick me up on your way past?"',scores:{heptapod:3,pleiadian:1}},
+      {zh:'"放马过来，人类没在怕的。"',en:'"Bring it on. Humans aren\'t afraid."',scores:{orion:3,lyran:1}},
+      {zh:'"宇宙这么大，我想去看看。"',en:'"The universe is so vast. I want to go see it."',scores:{andromedan:3,lyran:1}}
+    ]
+  }
+];
+
+const SEGMENTS = [
+  {zh:{num:'扫描段 I / 4',title:'星图响应',desc:'校准你对"外面"的本能反应'},en:{num:'SCAN SEGMENT I / IV',title:'Star Chart Response',desc:'Calibrating your instinctive reaction to "out there"'}},
+  {zh:{num:'扫描段 II / 4',title:'情感协议',desc:'测量你处理人类情绪与信息的方式'},en:{num:'SCAN SEGMENT II / IV',title:'Emotional Protocol',desc:'Measuring how you process human emotion and information'}},
+  {zh:{num:'扫描段 III / 4',title:'社会拟态',desc:'分析你在人群中的伪装模式'},en:{num:'SCAN SEGMENT III / IV',title:'Social Mimicry',desc:'Analyzing your camouflage patterns within human society'}},
+  {zh:{num:'扫描段 IV / 4',title:'危机协议',desc:'觉醒前的最终校准'},en:{num:'SCAN SEGMENT IV / IV',title:'Crisis Protocol',desc:'Final calibration before awakening'}}
+];
+
+const NOTICES = [
+  {zh:'段 I 扫描完毕。检测到首个异常片段。继续。',en:'Segment I complete. First anomaly fragment detected. Continuing.'},
+  {zh:'警告：非地球签名强度上升。该结果已同步至档案局。',en:'WARNING: Non-terrestrial signature intensity rising. Results synced to archive.'},
+  {zh:'序列重组完成度 78%。剩余片段进入深层校准。',en:'Sequence reconstruction 78% complete. Remaining fragments entering deep calibration.'}
+];
+
+const STRINGS = {
+  zh:{
+    landingTitle:'外星基因\n检测报告',
+    landingSubtitle:'Alien DNA Scan · Project Recall',
+    storyP1:'人类基因组计划完成后，科学家确认：人类DNA中约有8%来自远古病毒插入，功能不明，长期被归档为"垃圾DNA"。',
+    storyP2:'传说中，一个代号「母星召回计划」的跨国小组在这8%里识别出了12段无法用地球演化解释的休眠序列——像不同厂商留在产品里的出厂标记。',
+    storyP3:'现在，档案库的自助扫描端口"泄露"了。你面前的，就是那个端口。',
+    storyP4:'扫一下，看看你是哪个星球的批次。',
+    btnAccess:'⊕ 接入扫描端口',
+    btnRefuse:'拒绝接入',
+    disclaimer:'本扫描为娱乐内容，档案局并不存在（大概）。📜标签为都市传说，🎬为科幻虚构，仅🔬标签为真实科学。',
+    stampDraft:'征召令',
+    stampPure:'纯血认证',
+    stampDecrypted:'已解密',
+    terranNoticeLabel:'⚠ 异常检测 ANOMALY DETECTED',
+    terranNoticeText:'受测者拒绝授权……正在关闭端口……\n等等。\n检测到异常：你抵抗了好奇心。',
+    terranTitle:'铁血地球人',
+    terranRarity:'全档案库仅 0.1% · 全谱系真正的天花板',
+    terranDraftText:'...',
+    terranPersonality:'不靠血统、不等召唤、不信救世主。别人觉醒你扛事。全场最该被外星人忌惮的就是你。',
+    btnInfiltrate:'↳ 潜入档案局，看看他们到底在测什么',
+    sectionOrigin:'来源星系',
+    sectionArchive:'原型档案',
+    sectionPersonality:'性格解读',
+    sectionSkills:'外星技能 & 隐藏弱点',
+    sectionMix:'序列构成',
+    sectionAlly:'同盟 & 宿敌序列',
+    sectionEpilogue:'附录：普查目的',
+    sectionMedia:'档案局推荐研读材料',
+    btnCert:'领取召回血统认证书',
+    btnCertTerranB:'领取纯血地球人认证书',
+    btnInvite:'邀请同源者比对基因',
+    btnDownload:'保存认证书图片',
+    btnBack:'返回档案',
+    scanHeader:'SEQUENCE ANALYSIS // MOTHERSTAR RECALL DATABASE',
+    scanLines:[
+      '正在接入召回档案库……',
+      '比对12组休眠序列……',
+      '排除地球灵长类干扰……',
+      '检测到异常片段！',
+      '交叉比对星系数据库……',
+      '序列共振确认中……',
+      '匹配成功。',
+      '档案解密中……',
+    ],
+    scanLinesSilent:[
+      '正在接入召回档案库……',
+      '比对12组休眠序列……',
+      '警告：序列响应异常……',
+      '重新扫描……',
+      '12段序列，全部沉默。',
+      '正在验证结果……',
+      '确认：无外星签名检测到。',
+      '铁血地球人档案生成中……',
+    ],
+    matchScore:'序列匹配度',
+    rarityLabel:'档案库中仅',
+    rarityUnit:'受测者携带此序列',
+    allyLabel:'同盟序列',
+    enemyLabel:'宿敌序列',
+    skillsLabel:'外星技能',
+    weakLabel:'隐藏弱点',
+    epilogueText:`附录：你可能想知道这次扫描的目的。\n\n档案局相信，播种者约定了一个回归窗口期。距离窗口开启：`,
+    epilogueEnd:`\n\n你的序列已录入召回名单。当母星的信号抵达时，携带者会最先知道。\n\n在那之前，你只需要做一件事——找到你的同源者。`,
+    archiveHeader:'母星召回计划 · 基因觉醒档案',
+    certTitle:'召回血统认证书',
+    certTitleEn:'CERTIFICATE OF RECALL BLOODLINE',
+    certTitleTerranA:'地球联盟军征召令',
+    certTitleTerranAEn:'TERRAN ALLIANCE DRAFT NOTICE',
+    certTitleTerranB:'纯血地球人认证书',
+    certTitleTerranBEn:'CERTIFICATE OF PURE-BLOOD TERRAN',
+    certStatusOk:'召回资格：已确认 / 窗口期：██（已编辑）/ 主序列批次：{batch}',
+    certStatusTerran:'召回资格：无 / 备注：地球原装，非外星代工，不予召回',
+  },
+  en:{
+    landingTitle:'Alien DNA\nScan Report',
+    landingSubtitle:'Alien DNA Scan · Project Recall',
+    storyP1:'After the Human Genome Project, scientists confirmed: roughly 8% of human DNA comes from ancient viral insertions — function unknown, long archived as "junk DNA." 🔬',
+    storyP2:'Legend has it a cross-national team codenamed "Project Recall" identified 12 dormant sequences in that 8% that defy terrestrial evolution — like factory stamps different manufacturers leave in their products.',
+    storyP3:'Now, the archive\'s self-service scan port has "leaked." What stands before you is that port.',
+    storyP4:'Run the scan. Find out which planet\'s production batch you are.',
+    btnAccess:'⊕ CONNECT TO SCAN PORT',
+    btnRefuse:'Decline Access',
+    disclaimer:'This scan is entertainment. The Archive does not exist (probably). 📜 = urban legend, 🎬 = sci-fi fiction, only 🔬 = real science.',
+    stampDraft:'DRAFT NOTICE',
+    stampPure:'PURE BLOOD CERT',
+    stampDecrypted:'DECRYPTED',
+    terranNoticeLabel:'⚠ ANOMALY DETECTED',
+    terranNoticeText:'Subject refused authorization... closing port...\nWait.\nAnomaly detected: you resisted curiosity.',
+    terranTitle:'Iron-Blooded Terran',
+    terranRarity:'Only 0.1% of the archive — the true apex of the full spectrum',
+    terranPersonality:'No bloodline needed. No calling awaited. No messiah trusted. While others awaken, you hold the line. You are the one the aliens should actually fear.',
+    btnInfiltrate:'↳ Infiltrate the archive — see what they\'re really testing',
+    sectionOrigin:'Source System',
+    sectionArchive:'Origin Archive',
+    sectionPersonality:'Personality Profile',
+    sectionSkills:'Alien Abilities & Hidden Weakness',
+    sectionMix:'Sequence Composition',
+    sectionAlly:'Ally & Enemy Sequences',
+    sectionEpilogue:'Appendix: Purpose of the Census',
+    sectionMedia:'Archive Recommended Reading',
+    btnCert:'CLAIM RECALL BLOODLINE CERTIFICATE',
+    btnCertTerranB:'CLAIM PURE-BLOOD TERRAN CERTIFICATE',
+    btnInvite:'Invite a same-source subject to compare genes',
+    btnDownload:'SAVE CERTIFICATE IMAGE',
+    btnBack:'Return to Archive',
+    scanHeader:'SEQUENCE ANALYSIS // MOTHERSTAR RECALL DATABASE',
+    scanLines:[
+      'Connecting to Recall Archive...',
+      'Cross-referencing 12 dormant sequences...',
+      'Filtering terrestrial primate interference...',
+      'Anomalous fragment detected!',
+      'Cross-referencing galactic database...',
+      'Confirming sequence resonance...',
+      'Match confirmed.',
+      'Decrypting archive file...',
+    ],
+    scanLinesSilent:[
+      'Connecting to Recall Archive...',
+      'Cross-referencing 12 dormant sequences...',
+      'WARNING: Anomalous sequence response...',
+      'Re-scanning...',
+      'All 12 sequences: silent.',
+      'Validating result...',
+      'Confirmed: no alien signatures detected.',
+      'Generating Iron-Blooded Terran file...',
+    ],
+    matchScore:'Sequence match',
+    rarityLabel:'Only',
+    rarityUnit:'of archive subjects carry this sequence',
+    allyLabel:'Allied Sequence',
+    enemyLabel:'Enemy Sequence',
+    skillsLabel:'Alien Abilities',
+    weakLabel:'Hidden Weakness',
+    epilogueText:`Appendix: You may want to know the purpose of this scan.\n\nThe Archive believes the Seeders agreed to a recall window. Time to window opening:`,
+    epilogueEnd:`\n\nYour sequence has been logged in the recall list. When the Motherstar's signal arrives, carriers will know first.\n\nUntil then, you have one task — find your same-source others.`,
+    archiveHeader:'PROJECT RECALL · GENETIC AWAKENING FILE',
+    certTitle:'召回血统认证书',
+    certTitleEn:'CERTIFICATE OF RECALL BLOODLINE',
+    certTitleTerranA:'地球联盟军征召令',
+    certTitleTerranAEn:'TERRAN ALLIANCE DRAFT NOTICE',
+    certTitleTerranB:'纯血地球人认证书',
+    certTitleTerranBEn:'CERTIFICATE OF PURE-BLOOD TERRAN',
+    certStatusOk:'Recall Status: CONFIRMED / Window: ██ (REDACTED) / Primary Batch: {batch}',
+    certStatusTerran:'Recall Status: N/A / Note: Original Terran. Non-alien manufacture. Not subject to recall.',
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let lang = (navigator.language||'').startsWith('zh') ? 'zh' : 'zh'; // default zh
+let archiveId = '';
+let answers = [];
+let scores = {};
+let currentQ = 0;
+let quizPhase = 'idle'; // idle | seg | q | notice | scanning
+let resultGene = '';
+let mixTop3 = [];
+let terranVia = '';
+
+function t(key){return (STRINGS[lang]||STRINGS.zh)[key]||key}
+function gd(geneId){return GENE_DATA[geneId]}
+
+function toggleLang(){
+  lang = lang==='zh'?'en':'zh';
+  document.getElementById('langBtn').textContent = lang==='zh'?'EN':'中';
+  document.documentElement.lang = lang;
+  applyI18n();
+}
+function applyI18n(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(STRINGS[lang][k]) el.textContent=STRINGS[lang][k];
+  });
+}
+
+function genArchiveId(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s='RC-';
+  for(let i=0;i<6;i++) s+=chars[Math.floor(Math.random()*chars.length)];
+  return s;
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const sc=document.getElementById('screen-'+id);
+  if(sc){sc.classList.add('active');sc.scrollIntoView({behavior:'smooth',block:'start'})}
+}
+
+// ============================================================
+// FLOW
+// ============================================================
+function refuseAccess(){
+  terranVia='refuse';
+  showScreen('terran-a');
+  history.replaceState(null,'','?r=terran&via=refuse');
+}
+
+function startScan(){
+  answers=[];
+  scores={};
+  GENES.forEach(g=>scores[g]=0);
+  currentQ=0;
+  archiveId=genArchiveId();
+  showScreen('idgen');
+  runIdGen();
+}
+
+function runIdGen(){
+  const textEl=document.getElementById('idgenText');
+  const idEl=document.getElementById('idgenId');
+  const idzh='正在为受测者分配档案编号……';
+  const iden='Assigning archive ID to subject...';
+  textEl.textContent=lang==='zh'?idzh:iden;
+  idEl.innerHTML='<span class="cursor">█</span>';
+  setTimeout(()=>{
+    let i=0;
+    const full=archiveId;
+    idEl.textContent='';
+    const iv=setInterval(()=>{
+      idEl.textContent=full.substring(0,i+1)+(i<full.length-1?'█':'');
+      i++;
+      if(i>=full.length){
+        clearInterval(iv);
+        idEl.textContent=full;
+        setTimeout(()=>advanceQuiz(),800);
+      }
+    },120);
+  },600);
+}
+
+function advanceQuiz(){
+  // Determine what to show next
+  const q=QUESTIONS[currentQ];
+  const prevSeg = currentQ>0?QUESTIONS[currentQ-1].seg:0;
+  const curSeg = q?q.seg:0;
+
+  if(currentQ===0){
+    showSegIntro(0,()=>showQuestion());
+    return;
+  }
+  if(q && q.seg!==prevSeg){
+    // Show notice first, then seg intro
+    const noticeIdx=prevSeg-1;
+    showNotice(noticeIdx,()=>showSegIntro(curSeg-1,()=>showQuestion()));
+    return;
+  }
+  showQuestion();
+}
+
+function showSegIntro(idx,cb){
+  const seg=SEGMENTS[idx];
+  const d=seg[lang]||seg.zh;
+  document.getElementById('segNum').textContent=d.num;
+  document.getElementById('segTitle').textContent=d.title;
+  document.getElementById('segDesc').textContent=d.desc;
+  showScreen('seg');
+  setTimeout(cb,1500);
+}
+
+function showNotice(idx,cb){
+  const n=NOTICES[idx];
+  const text=n?n[lang]||n.zh:'';
+  const el=document.getElementById('noticeText');
+  el.innerHTML=`<span>${text}</span><span class="warn">${lang==='zh'?'SEQ.'+((idx+1)*3)+' // ANOMALY LOGGED':'SEQ.'+((idx+1)*3)+' // ANOMALY LOGGED'}</span>`;
+  showScreen('notice');
+  setTimeout(cb,2000);
+}
+
+function showQuestion(){
+  if(currentQ>=QUESTIONS.length){
+    startScanning();
+    return;
+  }
+  const q=QUESTIONS[currentQ];
+  // Show pre-Q12 notice
+  if(currentQ===11){
+    const preEl=document.getElementById('noticeText');
+    const txt=lang==='zh'?'最终比对。下一个回答将锁定你的主序列。':'Final comparison. Your next answer will lock your primary sequence.';
+    preEl.innerHTML=`<span style="font-size:15px;color:var(--white)">${txt}</span>`;
+    showScreen('notice');
+    setTimeout(()=>renderQuestion(q),1800);
+    return;
+  }
+  renderQuestion(q);
+}
+
+function renderQuestion(q){
+  const progEl=document.getElementById('progressBar');
+  // Build progress: 4 segments of 3 questions each
+  const segs=[0,3,6,9];
+  let html='';
+  for(let s=0;s<4;s++){
+    html+='<div class="prog-seg">';
+    for(let i=0;i<3;i++){
+      const qIdx=segs[s]+i;
+      const lit=qIdx<currentQ?'lit':'';
+      html+=`<div class="prog-cell ${lit}"></div>`;
+    }
+    html+='</div>';
+  }
+  progEl.innerHTML=html;
+  document.getElementById('progLabel').textContent=`SEQ.${String(currentQ+1).padStart(2,'0')} / 12 // ${lang==='zh'?'基因序列扫描':'GENE SEQUENCE SCAN'}`;
+
+  const tag=lang==='zh'?q.zh_tag:q.en_tag;
+  document.getElementById('qNum').textContent=`SEQ.${String(currentQ+1).padStart(2,'0')} // ${lang==='zh'?SEGMENTS[q.seg-1].zh.title:SEGMENTS[q.seg-1].en.title}`;
+  document.getElementById('qText').innerHTML=(lang==='zh'?q.zh:q.en)+(tag?`<span class="q-tag">${tag}</span>`:'');
+
+  const keys=['A','B','C','D','E','F'];
+  const optsEl=document.getElementById('qOptions');
+  optsEl.innerHTML=q.options.map((o,i)=>`
+    <button class="opt-btn" onclick="selectAnswer(${i})">
+      <span class="opt-key">${keys[i]}.</span>${lang==='zh'?o.zh:o.en}
+    </button>
+  `).join('');
+
+  showScreen('quiz');
+}
+
+function selectAnswer(optIdx){
+  const q=QUESTIONS[currentQ];
+  const opt=q.options[optIdx];
+  answers.push(optIdx);
+  Object.entries(opt.scores).forEach(([gene,pts])=>{
+    scores[gene]=(scores[gene]||0)+pts;
+  });
+  // Visual feedback
+  const btns=document.querySelectorAll('.opt-btn');
+  if(btns[optIdx]) btns[optIdx].classList.add('selected');
+  currentQ++;
+  setTimeout(()=>advanceQuiz(),300);
+}
+
+// ============================================================
+// SCANNING
+// ============================================================
+function startScanning(){
+  // Check silent sequence (terran B)
+  const vals=Object.values(scores);
+  const maxS=Math.max(...vals);
+  const minS=Math.min(...vals);
+  const isSilent=(maxS-minS)<=2;
+
+  const lines=isSilent?(t('scanLinesSilent')):(t('scanLines'));
+  const terminal=document.getElementById('scanTerminal');
+  terminal.innerHTML='';
+  showScreen('scan');
+
+  let i=0;
+  function addLine(){
+    if(i>=lines.length){
+      setTimeout(()=>showResult(isSilent),600);
+      return;
+    }
+    const line=document.createElement('div');
+    line.className='scan-line'+(i===4&&isSilent?' err':i===3?' warn':i===6?' ok':'');
+    line.textContent='> '+lines[i];
+    line.style.animationDelay='0s';
+    terminal.appendChild(line);
+    terminal.scrollTop=terminal.scrollHeight;
+    i++;
+    setTimeout(addLine,400+Math.random()*200);
+  }
+  setTimeout(addLine,300);
+}
+
+// ============================================================
+// RESULT
+// ============================================================
+function showResult(isSilent){
+  if(isSilent){
+    terranVia='scan';
+    // fill archiveId
+    document.getElementById('terranBId').textContent=archiveId;
+    document.getElementById('terranBArchive').textContent=`[${archiveId}]`;
+    showScreen('terran-b');
+    history.replaceState(null,'','?r=terran&via=scan');
+    return;
+  }
+
+  // Determine top gene
+  let sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
+  // Tiebreak by rarity (lower = rarer = wins)
+  if(sorted[0][1]===sorted[1][1]){
+    sorted.sort((a,b)=>{
+      if(b[1]!==a[1]) return b[1]-a[1];
+      return gd(a[0]).rarity-gd(b[0]).rarity;
+    });
+  }
+  resultGene=sorted[0][0];
+
+  // Mix top 3
+  const top3=sorted.slice(0,3);
+  const total3=top3.reduce((s,x)=>s+x[1],0)||1;
+  mixTop3=top3.map(([g,s])=>({gene:g,pct:Math.round(s/total3*100)}));
+  // Normalize to 100
+  const sum=mixTop3.reduce((s,x)=>s+x.pct,0);
+  mixTop3[0].pct+=100-sum;
+
+  renderResultPage();
+  const params=`?r=${resultGene}&mix=${mixTop3.map(x=>x.gene.substr(0,4)+x.pct).join('-')}&id=${archiveId.replace('-','')}${lang!=='zh'?'&lang='+lang:''}`;
+  history.replaceState(null,'',params);
+}
+
+function renderResultPage(){
+  const g=resultGene;
+  const gdata=gd(g);
+  const d=gdata[lang]||gdata.zh;
+  const s=STRINGS[lang];
+
+  // Match score
+  const maxPossible=15;
+  const rawScore=scores[g];
+  const matchPct=(Math.min(rawScore/maxPossible,1)*100).toFixed(1);
+
+  let html=`
+    <div class="result-header">
+      <span class="tech">${archiveId} // ${new Date().toISOString().slice(0,10)} // ${s.archiveHeader}</span>
+      <span class="result-stamp">${s.stampDecrypted}</span>
+    </div>
+
+    <div class="portrait-placeholder" data-label="${d.en||gdata.zh.en}" style="font-size:80px">
+      ${gdata.emoji}
+    </div>
+
+    <div class="gene-name">${d.name||gdata.zh.name}</div>
+    <div class="gene-name-en">${gdata.zh.en}</div>
+
+    <div class="match-row">
+      <span class="match-score">${s.matchScore}: <strong style="color:var(--accent)">${matchPct}%</strong></span>
+      <span class="rarity-badge">${s.rarityLabel} ${gdata.rarity}% ${s.rarityUnit}</span>
+    </div>
+
+    <div class="section-label">${s.sectionMix}</div>
+    <div class="mix-bar">
+      ${mixTop3.map(x=>{
+        const n=GENE_DATA[x.gene];
+        const nm=(n[lang]||n.zh).name||n.zh.name;
+        return `<div class="mix-row">
+          <span class="mix-name">${nm}</span>
+          <div class="mix-track"><div class="mix-fill" style="width:${x.pct}%"></div></div>
+          <span class="mix-pct">${x.pct}%</span>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="section-label">${s.sectionOrigin}</div>
+    <div class="info-card">
+      <p><span class="tag">📍</span>${gdata.zh.origin}</p>
+      ${gdata.zh.note?`<p style="margin-top:8px;color:var(--accent);font-size:12px">✦ ${gdata.zh.note}</p>`:''}
+    </div>
+
+    <div class="section-label">${s.sectionArchive}</div>
+    <div class="info-card">
+      <p>${gdata.zh.archive}</p>
+    </div>
+
+    <div class="section-label">${s.sectionPersonality}</div>
+    <div class="personality-text">${d.personality||gdata.zh.personality}</div>
+
+    <div class="section-label">${s.sectionSkills}</div>
+    <div class="skills-grid">
+      ${(d.skills||gdata.zh.skills).map(sk=>`<div class="skill-chip">⊕ ${sk}</div>`).join('')}
+      <div class="skill-chip weak">⚠ ${d.weak||gdata.zh.weak}</div>
+    </div>
+
+    <div class="section-label">${s.sectionAlly}</div>
+    <div style="margin-bottom:16px">
+      <div class="ally-row">
+        <span style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-right:4px">${s.allyLabel}:</span>
+        <span class="ally-chip ally">${(GENE_DATA[gdata.zh.allyId][lang]||GENE_DATA[gdata.zh.allyId].zh).name||GENE_DATA[gdata.zh.allyId].zh.name}</span>
+      </div>
+      <div class="ally-row">
+        <span style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-right:4px">${s.enemyLabel}:</span>
+        <span class="ally-chip enemy">${(GENE_DATA[gdata.zh.enemyId][lang]||GENE_DATA[gdata.zh.enemyId].zh).name||GENE_DATA[gdata.zh.enemyId].zh.name}</span>
+      </div>
+    </div>
+
+    <div class="section-label">${s.sectionEpilogue}</div>
+    <div class="epilogue">
+      ${s.epilogueText}<span class="blacked">██:██:██</span>${s.epilogueEnd}
+    </div>
+
+    <button class="btn-cert" onclick="showCert('normal')">${s.btnCert}</button>
+    <button class="btn-share" onclick="shareResult()">${s.btnInvite}</button>
+
+    <div class="section-label">${s.sectionMedia}</div>
+    <ul class="media-list">
+      ${gdata.zh.media.map(m=>`<li>${m}</li>`).join('')}
+    </ul>
+
+    <div class="disclaimer" style="margin-top:24px">${t('disclaimer')}</div>
+  `;
+
+  document.getElementById('resultContent').innerHTML=html;
+  showScreen('result');
+  // Animate mix bars
+  setTimeout(()=>{
+    document.querySelectorAll('.mix-fill').forEach(el=>{
+      el.style.transition='width 1s ease';
+    });
+  },100);
+}
+
+// ============================================================
+// CERTIFICATE
+// ============================================================
+function showCert(type){
+  const overlay=document.getElementById('certOverlay');
+  const card=document.getElementById('cert-card');
+  card.className='';
+
+  const s=STRINGS[lang];
+  const today=new Date().toISOString().slice(0,10);
+
+  if(type==='terran-a'||type==='terran-b'){
+    card.className='terran-cert';
+    document.getElementById('certMainTitle').textContent=type==='terran-a'?s.certTitleTerranA:s.certTitleTerranB;
+    document.getElementById('certMainTitleEn').textContent=type==='terran-a'?s.certTitleTerranAEn:s.certTitleTerranBEn;
+    document.getElementById('certPortrait').textContent='🌍';
+    document.getElementById('certIdSpan').textContent=type==='terran-a'?'RC-UNREGISTERED':archiveId;
+    document.getElementById('certDateSpan').textContent=today;
+    document.getElementById('certGeneName').textContent='铁血地球人';
+    document.getElementById('certGeneNameEn').textContent='THE IRON-BLOODED TERRAN';
+    document.getElementById('certBatch').textContent='批次：地球 · 原装产区 · 不予召回';
+    document.getElementById('certRarity').textContent='稀有度：0.1% · 全谱系天花板 RARITY: 0.1%';
+    document.getElementById('certMix').innerHTML='';
+    document.getElementById('certStatus').textContent=s.certStatusTerran;
+  } else {
+    const g=resultGene;
+    const gdata=gd(g);
+    const d=gdata[lang]||gdata.zh;
+    document.getElementById('certMainTitle').textContent=s.certTitle;
+    document.getElementById('certMainTitleEn').textContent=s.certTitleEn;
+    document.getElementById('certPortrait').textContent=gdata.emoji;
+    document.getElementById('certIdSpan').textContent=archiveId;
+    document.getElementById('certDateSpan').textContent=today;
+    document.getElementById('certGeneName').textContent=d.name||gdata.zh.name;
+    document.getElementById('certGeneNameEn').textContent=gdata.zh.en.toUpperCase();
+    document.getElementById('certBatch').textContent=gdata.zh.batch;
+    document.getElementById('certRarity').textContent=`稀有度 ${gdata.rarity}% · RARITY ${gdata.rarity}%`;
+    const mixHtml=mixTop3.map(x=>{
+      const n=GENE_DATA[x.gene];
+      return `<div class="cert-mix-row">
+        <span class="cert-mix-label">${(n[lang]||n.zh).name||n.zh.name}</span>
+        <div class="cert-mix-bar"><div class="cert-mix-fill" style="width:${x.pct}%"></div></div>
+        <span class="cert-mix-pct">${x.pct}%</span>
+      </div>`;
+    }).join('');
+    document.getElementById('certMix').innerHTML=mixHtml;
+    document.getElementById('certStatus').textContent=s.certStatusOk.replace('{batch}',gdata.zh.batch);
+  }
+
+  overlay.classList.add('active');
+}
+
+function closeCert(){
+  document.getElementById('certOverlay').classList.remove('active');
+}
+
+async function downloadCert(){
+  const card=document.getElementById('cert-card');
+  try{
+    const canvas=await html2canvas(card,{
+      backgroundColor:'#14130f',
+      scale:2,
+      useCORS:true,
+      allowTaint:true
+    });
+    const a=document.createElement('a');
+    a.href=canvas.toDataURL('image/png');
+    a.download=`召回血统认证书_${archiveId||'RC'}.png`;
+    a.click();
+  }catch(e){
+    alert('导出失败，请截图保存 / Export failed, please screenshot.');
+  }
+}
+
+function shareResult(){
+  const url=window.location.href;
+  if(navigator.share){
+    navigator.share({title:'外星基因检测报告',text:`我的档案编号：${archiveId}，测出了${(GENE_DATA[resultGene]?.zh?.name)||'外星基因'}！`,url});
+  } else if(navigator.clipboard){
+    navigator.clipboard.writeText(url).then(()=>alert(lang==='zh'?'链接已复制！':'Link copied!'));
+  }
+}
+
+// ============================================================
+// URL PARAM RESTORE
+// ============================================================
+function checkUrlParams(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('lang')) lang=p.get('lang');
+  const r=p.get('r');
+  const via=p.get('via');
+  if(r==='terran'){
+    if(via==='refuse'){showScreen('terran-a');terranVia='refuse';}
+    else{
+      terranVia='scan';
+      archiveId=p.get('id')||genArchiveId();
+      document.getElementById('terranBId').textContent=archiveId;
+      showScreen('terran-b');
+    }
+  } else if(r&&GENES.includes(r)){
+    resultGene=r;
+    archiveId=p.get('id')||genArchiveId();
+    const mix=p.get('mix');
+    if(mix){
+      const parts=mix.split('-');
+      mixTop3=parts.map(pt=>{
+        const m=pt.match(/([a-z]+)(\d+)/);
+        if(m) return {gene:GENES.find(g=>g.startsWith(m[1]))||m[1],pct:parseInt(m[2])};
+        return null;
+      }).filter(Boolean);
+    }
+    if(!mixTop3.length) mixTop3=[{gene:r,pct:100}];
+    // Init scores minimally
+    GENES.forEach(g=>scores[g]=0);
+    scores[r]=15;
+    renderResultPage();
+  }
+}
+
+// ============================================================
+// BALANCE CHECK (console only)
+// ============================================================
+function runBalanceCheck(){
+  const maxScores={};
+  GENES.forEach(g=>{maxScores[g]=0});
+  QUESTIONS.forEach(q=>{
+    const perGene={};
+    GENES.forEach(g=>{perGene[g]=0});
+    q.options.forEach(o=>{
+      Object.entries(o.scores).forEach(([gene,pts])=>{
+        perGene[gene]=Math.max(perGene[gene],pts);
+      });
+    });
+    GENES.forEach(g=>{maxScores[g]+=perGene[g]});
+  });
+  const vals=Object.values(maxScores);
+  const mx=Math.max(...vals),mn=Math.min(...vals);
+  console.log('=== BALANCE CHECK ===');
+  GENES.forEach(g=>console.log(`${g}: ${maxScores[g]}`));
+  console.log(`Range: ${mn} - ${mx} (spread: ${mx-mn})`);
+  if(mx-mn>6) console.warn('⚠ Spread > 6, consider rebalancing secondaries');
+  else console.log('✓ Balance within acceptable range');
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded',()=>{
+  checkUrlParams();
+  document.getElementById('langBtn').textContent=lang==='zh'?'EN':'中';
+  document.documentElement.lang=lang;
+  runBalanceCheck();
+});
+</script>
+</body>
+</html>
