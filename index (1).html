@@ -275,7 +275,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="tn-label" data-i18n="terranNoticeLabel">⚠ 异常检测 ANOMALY DETECTED</div>
         <div class="tn-text" data-i18n="terranNoticeText">受测者拒绝授权……正在关闭端口……<br>等等。<br>检测到异常：你抵抗了好奇心。</div>
       </div>
-      <div class="gene-portrait-wrap" style="margin-bottom:24px;border-color:var(--red)"><img class="gene-portrait" src="assets/gene-terran.png" alt="IRON-BLOODED TERRAN" loading="lazy" onerror="pfb(this,'🌍')"><span class="portrait-tag">IRON-BLOODED TERRAN</span></div>
+      <div class="gene-portrait-wrap" style="margin-bottom:24px;border-color:var(--red)"><img class="gene-portrait" src="assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png" alt="IRON-BLOODED TERRAN" loading="lazy" onerror="pfb(this,'🌍')"><span class="portrait-tag">IRON-BLOODED TERRAN</span></div>
       <div class="gene-name" style="color:var(--white)" data-i18n="terranTitle">铁血地球人</div>
       <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH A</div>
       <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
@@ -352,7 +352,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <span class="tech">SCAN COMPLETE // ANOMALY: SILENT SEQUENCE</span>
         <span class="result-stamp" style="background:var(--red)" data-i18n="stampPure">纯血认证</span>
       </div>
-      <div class="gene-portrait-wrap" style="margin-bottom:24px;border-color:var(--red)"><img class="gene-portrait" src="assets/gene-terran.png" alt="IRON-BLOODED TERRAN" loading="lazy" onerror="pfb(this,'🌍')"><span class="portrait-tag">IRON-BLOODED TERRAN</span></div>
+      <div class="gene-portrait-wrap" style="margin-bottom:24px;border-color:var(--red)"><img class="gene-portrait" src="assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png" alt="IRON-BLOODED TERRAN" loading="lazy" onerror="pfb(this,'🌍')"><span class="portrait-tag">IRON-BLOODED TERRAN</span></div>
       <div class="gene-name" data-i18n="terranTitle">铁血地球人</div>
       <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH B · SILENT SEQUENCE</div>
       <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
@@ -421,8 +421,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 const GENES = ['grey','reptilian','anunnaki','pleiadian','sirian','arcturian','heptapod','trisolaran','lyran','orion','andromedan','mantis'];
 // === IMAGE ASSETS ===
-const ASSET_PORTRAIT={};GENES.concat(['terran']).forEach(g=>ASSET_PORTRAIT[g]='assets/gene-'+g+'.png');
-const ASSET_BG={landing:'assets/bg-landing.png',quiz:'assets/bg-quiz.png',result:'assets/bg-result.png'};
+const ASSET_PORTRAIT={"grey": "assets/lyu8495__a_grey_alien_with_smooth_grey_skin_oversized_black_a_14adaa36-94e3-4a14-b813-6c3c05607e17_0.png", "orion": "assets/lyu8495_a_battle-hardened_alien_warrior_with_sharp_features_a_b9b8496a-c45a-4f39-b57c-8e91d5e17e40_1.png", "terran": "assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png", "reptilian": "assets/lyu8495_a_dignified_reptilian_humanoid_with_fine_emerald_scal_75fa3d73-40d2-4e51-9758-2c51593cec84_1.png", "lyran": "assets/lyu8495_a_feline_humanoid_alien_with_amber_cat_eyes_Lion_comb_633956ea-86b8-493b-9a7a-7a29a345b8c2_2.png", "andromedan": "assets/lyu8495_a_free-spirited_androgynous_alien_with_wind-blown_hai_e61bb0c5-363e-4d51-9681-ef418ad6b025_1.png", "heptapod": "assets/lyu8495_a_graceful_heptapod_alien_seven_limbs_emerging_from_s_c100d517-dfd2-434c-a2c2-babab8179a0f_1.png", "trisolaran": "assets/lyu8495_a_humanoid_figure_with_shimmering_parchment-like_dehy_bfe05c86-4e0f-4c92-869f-a8e85e4e1162_2.png", "pleiadian": "assets/lyu8495_a_luminous_nordic_humanoid_with_long_pale_hair_and_ge_9b6b1c57-1c6e-490e-82ab-4f82a4138a29_0.png", "mantis": "assets/lyu8495_a_serene_mantis-like_tall_alien_with_elegant_folded_f_8e8deedc-d156-4f3d-893c-98566cdba9c7_0.png", "anunnaki": "assets/lyu8495_a_tall_regal_humanoid_with_ancient_Sumerian_braided_b_a7a25d6c-4e3b-4996-8322-f92436ba0278_2.png", "sirian": "assets/lyu8495_an_elegant_blue-skinned_humanoid_with_Egyptian_featur_4da7c38f-e821-4484-9179-6b607a4dc6a5_3.png", "arcturian": "assets/lyu8495_an_ethereal_tall_being_with_elongated_head_and_faint__fed575b6-40cb-4295-9963-2d6c0efd52f0_1.png"};
+const ASSET_BG={"landing": "assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_ed963d20-c24a-47da-87a7-f566b1702f9c_1.png", "result": "assets/lyu8495_underground_archive_vault_endless_rows_of_weathered_f_ee87abdc-7cba-454e-a64e-24666b421e9a_0.png", "quiz": "assets/lyu8495_vast_post-apocalyptic_wasteland_at_dusk_a_lone_rusted_61433dac-db20-438b-b43d-c5ff97364688_0.png"};
 function pfb(img,emoji){const d=document.createElement('div');d.className='portrait-placeholder';d.style.fontSize='80px';d.setAttribute('data-label',img.alt||'');d.textContent=emoji;const w=img.closest('.gene-portrait-wrap');(w||img).replaceWith(d)}
 function setCertPortrait(id,emoji){const el=document.getElementById('certPortrait');el.textContent='';const im=document.createElement('img');im.src=ASSET_PORTRAIT[id];im.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center 20%';im.onerror=function(){el.textContent=emoji};el.appendChild(im)}
 
