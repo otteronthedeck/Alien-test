@@ -253,7 +253,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .gene-portrait-wrap{width:100%;margin-bottom:24px;position:relative;overflow:hidden;border:1px solid var(--bg3);background:var(--bg2)}
 .gene-portrait-img{width:100%;max-height:300px;object-fit:cover;display:block}
 .portrait-fallback{width:100%;height:260px;display:none;align-items:center;justify-content:center;font-size:72px;background:linear-gradient(135deg,var(--bg2),var(--bg3));font-family:var(--mono)}
-.cert-portrait-img{width:100%;height:100%;object-fit:cover;display:block}
+.cert-portrait-img{width:100%;height:220px;object-fit:cover;display:block;flex-shrink:0;align-self:stretch}
 
 /* ===== MOBILE-FIRST (375px base) ===== */
 /* Touch target minimums */
@@ -1157,7 +1157,7 @@ function renderResultPage(){
     </div>
 
     <div class="gene-portrait-wrap">
-      <img class="gene-portrait-img" src="${PORTRAIT_FILES[g]||''}" alt="${d.name||gdata.zh.name}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <img class="gene-portrait-img" src="${PORTRAIT_FILES[g]||'data:,'}" alt="${d.name||gdata.zh.name}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="portrait-fallback" aria-hidden="true">⊕</div>
     </div>
 
@@ -1256,7 +1256,13 @@ function showCert(type){
     document.getElementById('certMainTitle').textContent=type==='terran-a'?s.certTitleTerranA:s.certTitleTerranB;
     document.getElementById('certMainTitleEn').textContent=type==='terran-a'?s.certTitleTerranAEn:s.certTitleTerranBEn;
     const cpT=document.getElementById('certPortrait');
-    cpT.innerHTML=`<img class="cert-portrait-img" src="${PORTRAIT_FILES.terran}" alt="Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.textContent='🌍'">`;
+    cpT.innerHTML='';
+    const imgT=new Image();
+    imgT.className='cert-portrait-img';
+    imgT.alt='Terran';
+    imgT.onerror=function(){this.remove();cpT.textContent='🌍';};
+    imgT.src=PORTRAIT_FILES.terran;
+    cpT.appendChild(imgT);
     document.getElementById('certIdSpan').textContent=type==='terran-a'?'RC-UNREGISTERED':archiveId;
     document.getElementById('certDateSpan').textContent=today;
     document.getElementById('certGeneName').textContent='铁血地球人';
@@ -1272,7 +1278,14 @@ function showCert(type){
     document.getElementById('certMainTitle').textContent=s.certTitle;
     document.getElementById('certMainTitleEn').textContent=s.certTitleEn;
     const cpN=document.getElementById('certPortrait');
-    cpN.innerHTML=`<img class="cert-portrait-img" src="${PORTRAIT_FILES[g]||''}" alt="${d.name||gdata.zh.name}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.textContent='${gdata.emoji}'">`;
+    cpN.innerHTML='';
+    const imgN=new Image();
+    imgN.className='cert-portrait-img';
+    imgN.alt=d.name||gdata.zh.name;
+    const _emoji=gdata.emoji;
+    imgN.onerror=function(){this.remove();cpN.textContent=_emoji;};
+    imgN.src=PORTRAIT_FILES[g]||'';
+    cpN.appendChild(imgN);
     document.getElementById('certIdSpan').textContent=archiveId;
     document.getElementById('certDateSpan').textContent=today;
     document.getElementById('certGeneName').textContent=d.name||gdata.zh.name;
