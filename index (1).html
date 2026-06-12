@@ -22,6 +22,25 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'PingFang SC','Microsoft YaHei',sans-serif;overflow-x:hidden}
 
+/* ===== BACKGROUND ENV SYSTEM ===== */
+.bg-env{position:fixed;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0;transition:opacity .8s ease}
+.bg-landing{background-image:url('assets/lyu8495_underground_archive_vault_endless_rows_of_weathered_f_ee87abdc-7cba-454e-a64e-24666b421e9a_0.png')}
+.bg-quiz{background-image:url('assets/lyu8495_vast_post-apocalyptic_wasteland_at_dusk_a_lone_rusted_61433dac-db20-438b-b43d-c5ff97364688_0.png')}
+.bg-result{background-image:url('assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_ed963d20-c24a-47da-87a7-f566b1702f9c_1.png')}
+.bg-dimmer{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:1;pointer-events:none}
+/* FOG DRIFT LAYERS */
+.fog-drift{position:fixed;inset:0;pointer-events:none;z-index:2;will-change:transform,opacity}
+.fog-drift-1{background:radial-gradient(ellipse at 20% 65%,rgba(74,79,61,.18) 0,transparent 55%);animation:drift1 14s ease-in-out infinite alternate}
+.fog-drift-2{background:radial-gradient(ellipse at 78% 28%,rgba(200,134,26,.06) 0,transparent 48%);animation:drift2 19s ease-in-out infinite alternate}
+.fog-drift-3{background:radial-gradient(ellipse at 50% 85%,rgba(20,18,12,.35) 0,transparent 58%);animation:drift3 10s ease-in-out infinite alternate}
+@keyframes drift1{from{transform:translate(0,0) scale(1);opacity:.6}to{transform:translate(18px,-28px) scale(1.08);opacity:1}}
+@keyframes drift2{from{transform:translate(0,0);opacity:.5}to{transform:translate(-25px,18px);opacity:.9}}
+@keyframes drift3{from{transform:translate(0,0) scale(1);opacity:.7}to{transform:translate(12px,12px) scale(.94);opacity:1}}
+/* VIGNETTE */
+.vignette{position:fixed;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.55) 100%);z-index:3;pointer-events:none}
+/* PARTICLE CANVAS */
+#dustCanvas{position:fixed;inset:0;z-index:4;pointer-events:none}
+
 /* GRAIN OVERLAY */
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.04}
 
@@ -31,13 +50,13 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes fogshift{from{opacity:.5}to{opacity:1}}
 
 /* LAYOUT */
-#app{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+#app{position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
 .screen{display:none;width:100%;max-width:680px;animation:fadein .6s ease}
 .screen.active{display:flex;flex-direction:column}
 @keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
 /* HEADER */
-.sys-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--bg3);position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,24,.92);backdrop-filter:blur(4px)}
+.sys-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--bg3);position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(12,11,9,.88)}
 .sys-logo{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase}
 .lang-btn{background:none;border:1px solid var(--bg3);color:var(--text2);font-size:11px;font-family:var(--mono);padding:4px 10px;cursor:pointer;letter-spacing:.1em;transition:.2s}
 .lang-btn:hover{border-color:var(--accent);color:var(--accent)}
@@ -158,7 +177,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .terran-draft .code{font-family:var(--mono);color:var(--accent)}
 
 /* CERTIFICATE MODAL */
-.cert-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,8,.95);z-index:200;overflow-y:auto;padding:20px;align-items:flex-start;justify-content:center}
+.cert-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,8,.95);z-index:300;overflow-y:auto;padding:20px;align-items:flex-start;justify-content:center}
 .cert-overlay.active{display:flex}
 .cert-container{width:100%;max-width:400px;margin:auto}
 .cert-close{position:fixed;top:16px;right:20px;background:none;border:none;color:var(--text2);font-size:24px;cursor:pointer;z-index:201;font-family:var(--mono)}
@@ -197,16 +216,80 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 #cert-card.terran-cert .cert-status{background:rgba(138,47,35,.08);border-color:rgba(138,47,35,.3);color:#c07060}
 #cert-card.terran-cert .cert-rarity{color:#c07060}
 
+/* ===== PANEL CARD TEXTURE ===== */
+.story-block,.scan-terminal,.info-card,.personality-text,.epilogue,.terran-notice,.terran-draft{
+  background:rgba(12,11,9,.72)!important;
+  border:1px solid rgba(200,134,26,.22)!important;
+  border-left:3px solid var(--accent)!important;
+  box-shadow:inset 0 0 0 1px rgba(200,134,26,.06);
+  position:relative;
+}
+/* corner rivets via background */
+.story-block::before,.scan-terminal::before,.info-card::before,.epilogue::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 5px 5px,rgba(200,134,26,.45) 2px,transparent 2px),
+    radial-gradient(circle at calc(100% - 5px) 5px,rgba(200,134,26,.45) 2px,transparent 2px),
+    radial-gradient(circle at 5px calc(100% - 5px),rgba(200,134,26,.3) 2px,transparent 2px),
+    radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),rgba(200,134,26,.3) 2px,transparent 2px);
+}
+/* panel number label via data-panel attr (optional) */
+.quiz-wrap{background:rgba(12,11,9,.62);border:1px solid rgba(200,134,26,.18);padding:70px 20px 40px;margin-top:0;position:relative}
+.quiz-wrap::after{content:'SYS.PANEL';position:absolute;bottom:6px;right:10px;font-family:var(--mono);font-size:7px;color:rgba(200,134,26,.2);letter-spacing:.15em}
+
+/* GLOW ON INTERACTIVE ELEMENTS */
+.btn-primary{box-shadow:0 0 10px rgba(200,134,26,.25)}
+.btn-primary:active{box-shadow:0 0 20px rgba(200,134,26,.55)!important;transform:scale(.99)}
+.opt-btn{box-shadow:0 0 6px rgba(200,134,26,.08)}
+.opt-btn:active,.opt-btn.selected{box-shadow:0 0 14px rgba(200,134,26,.35)!important}
+.prog-cell.lit{box-shadow:0 0 5px rgba(200,134,26,.5)}
+.btn-cert{box-shadow:0 0 10px rgba(200,134,26,.2)}
+.btn-cert:active{box-shadow:0 0 22px rgba(200,134,26,.5)!important;transform:scale(.99)}
+
+/* STORY WARNING LINE */
+.story-warning{font-size:15px;font-weight:900;color:var(--white);letter-spacing:.04em;margin-top:4px;padding:10px 0 0;border-top:1px solid rgba(200,134,26,.3)}
+
+/* PORTRAIT IMAGE */
+.gene-portrait-wrap{width:100%;margin-bottom:24px;position:relative;overflow:hidden;border:1px solid var(--bg3);background:var(--bg2)}
+.gene-portrait-img{width:100%;max-height:300px;object-fit:cover;display:block}
+.portrait-fallback{width:100%;height:260px;display:none;align-items:center;justify-content:center;font-size:72px;background:linear-gradient(135deg,var(--bg2),var(--bg3));font-family:var(--mono)}
+.cert-portrait-img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* ===== MOBILE-FIRST (375px base) ===== */
+/* Touch target minimums */
+.btn-primary,.btn-cert,.btn-share,.btn-refuse,.lang-btn{min-height:44px;display:flex;align-items:center;justify-content:center}
+.opt-btn{min-height:44px;padding:12px 16px}
+/* Prevent text overflow on Chinese long sentences */
+.story-block p,.q-text,.personality-text,.terran-draft p,.tn-text{word-break:break-all;overflow-wrap:break-word;hyphens:auto}
+/* No hover-only interactions — use :active instead */
+.opt-btn:hover{border-color:inherit;background:inherit;color:inherit}
+.opt-btn:active{border-color:var(--accent);background:rgba(200,134,26,.1);color:var(--white)}
+.btn-primary:hover::before{background:rgba(255,255,255,0)}
+.btn-primary:active::before{background:rgba(255,255,255,.08)}
 /* RESPONSIVE */
 @media(max-width:480px){
-  .landing-title{font-size:28px}
-  .gene-name{font-size:26px}
+  .landing-title{font-size:26px}
+  .gene-name{font-size:24px}
   .skills-grid{grid-template-columns:1fr}
-  #cert-card{width:340px}
+  #cert-card{width:320px;padding:24px 18px}
+  .landing-wrap{padding:68px 16px 32px}
+  .result-wrap,.terran-wrap{padding:68px 12px 32px}
+  .quiz-wrap{padding:68px 16px 32px}
+  .q-text{font-size:16px}
+  .story-block p{font-size:13px}
+  .story-warning{font-size:14px}
+  .prog-cell{width:16px}
 }
 </style>
 </head>
 <body>
+<div id="bgLayer" class="bg-env bg-landing"></div>
+<div class="bg-dimmer"></div>
+<div class="fog-drift fog-drift-1"></div>
+<div class="fog-drift fog-drift-2"></div>
+<div class="fog-drift fog-drift-3"></div>
+<div class="vignette"></div>
+<canvas id="dustCanvas"></canvas>
 <div class="fog"></div>
 
 <div class="sys-header">
@@ -222,10 +305,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <h1 class="landing-title" data-i18n="landingTitle">外星基因<br>检测报告</h1>
       <div class="landing-sub" data-i18n="landingSubtitle">Alien DNA Scan · Project Recall</div>
       <div class="story-block">
-        <p data-i18n="storyP1">人类基因组计划完成后，科学家确认：人类DNA中约有8%来自远古病毒插入，功能不明，长期被归档为"垃圾DNA"。<span style="font-size:12px;color:var(--accent)">🔬</span></p>
-        <p data-i18n="storyP2">传说中，一个代号「母星召回计划」的跨国小组在这8%里识别出了<strong style="color:var(--white)">12段无法用地球演化解释的休眠序列</strong>——像不同厂商留在产品里的出厂标记。小组建立了加密档案库，持续登记携带者。<span style="font-size:12px;color:var(--sand)">📜</span></p>
-        <p data-i18n="storyP3">现在，档案库的自助扫描端口"泄露"了。你面前的，就是那个端口。</p>
-        <p data-i18n="storyP4">扫一下，看看你是哪个星球的批次。</p>
+        <p data-i18n="storyP1">远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。</p>
+        <p data-i18n="storyP2">直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。</p>
+        <p data-i18n="storyP3">后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。</p>
+        <p data-i18n="storyP4">「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。</p>
+        <p data-i18n="storyP5">这个端口，是计划的内部设备。它不应出现在这里。</p>
+        <p class="story-warning" data-i18n="storyWarning">接入即受测。检测不可逆。</p>
       </div>
       <button class="btn-primary" onclick="startScan()" data-i18n="btnAccess">⊕ 接入扫描端口</button>
       <a class="btn-refuse" onclick="refuseAccess()" data-i18n="btnRefuse">拒绝接入</a>
@@ -244,7 +329,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="tn-label" data-i18n="terranNoticeLabel">⚠ 异常检测 ANOMALY DETECTED</div>
         <div class="tn-text" data-i18n="terranNoticeText">受测者拒绝授权……正在关闭端口……<br>等等。<br>检测到异常：你抵抗了好奇心。</div>
       </div>
-      <div class="portrait-placeholder" style="font-size:80px;margin-bottom:24px;border-color:var(--red)" data-label="IRON-BLOODED TERRAN">🌍</div>
+      <div class="gene-portrait-wrap" style="border-color:var(--red);margin-bottom:24px">
+        <img class="gene-portrait-img" src="assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png" alt="Iron-Blooded Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="portrait-fallback" aria-hidden="true">🌍</div>
+      </div>
       <div class="gene-name" style="color:var(--white)" data-i18n="terranTitle">铁血地球人</div>
       <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH A</div>
       <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
@@ -321,7 +409,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <span class="tech">SCAN COMPLETE // ANOMALY: SILENT SEQUENCE</span>
         <span class="result-stamp" style="background:var(--red)" data-i18n="stampPure">纯血认证</span>
       </div>
-      <div class="portrait-placeholder" style="font-size:80px;margin-bottom:24px;border-color:var(--red)" data-label="IRON-BLOODED TERRAN">🌍</div>
+      <div class="gene-portrait-wrap" style="border-color:var(--red);margin-bottom:24px">
+        <img class="gene-portrait-img" src="assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png" alt="Iron-Blooded Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="portrait-fallback" aria-hidden="true">🌍</div>
+      </div>
       <div class="gene-name" data-i18n="terranTitle">铁血地球人</div>
       <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH B · SILENT SEQUENCE</div>
       <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
@@ -387,6 +478,22 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ============================================================
 // DATA LAYER
 // ============================================================
+
+const PORTRAIT_FILES = {
+  grey:       'assets/lyu8495__a_grey_alien_with_smooth_grey_skin_oversized_black_a_14adaa36-94e3-4a14-b813-6c3c05607e17_0.png',
+  reptilian:  'assets/lyu8495_a_dignified_reptilian_humanoid_with_fine_emerald_scal_75fa3d73-40d2-4e51-9758-2c51593cec84_1.png',
+  anunnaki:   'assets/lyu8495_a_tall_regal_humanoid_with_ancient_Sumerian_braided_b_a7a25d6c-4e3b-4996-8322-f92436ba0278_2.png',
+  pleiadian:  'assets/lyu8495_a_luminous_nordic_humanoid_with_long_pale_hair_and_ge_9b6b1c57-1c6e-490e-82ab-4f82a4138a29_0.png',
+  sirian:     'assets/lyu8495_an_elegant_blue-skinned_humanoid_with_Egyptian_featur_4da7c38f-e821-4484-9179-6b607a4dc6a5_3.png',
+  arcturian:  'assets/lyu8495_an_ethereal_tall_being_with_elongated_head_and_faint__fed575b6-40cb-4295-9963-2d6c0efd52f0_1.png',
+  heptapod:   'assets/lyu8495_a_graceful_heptapod_alien_seven_limbs_emerging_from_s_c100d517-dfd2-434c-a2c2-babab8179a0f_1.png',
+  trisolaran: 'assets/lyu8495_a_humanoid_figure_with_shimmering_parchment-like_dehy_bfe05c86-4e0f-4c92-869f-a8e85e4e1162_2.png',
+  lyran:      'assets/lyu8495_a_feline_humanoid_alien_with_amber_cat_eyes_Lion_comb_633956ea-86b8-493b-9a7a-7a29a345b8c2_2.png',
+  orion:      'assets/lyu8495_a_battle-hardened_alien_warrior_with_sharp_features_a_b9b8496a-c45a-4f39-b57c-8e91d5e17e40_1.png',
+  andromedan: 'assets/lyu8495_a_free-spirited_androgynous_alien_with_wind-blown_hai_e61bb0c5-363e-4d51-9681-ef418ad6b025_1.png',
+  mantis:     'assets/lyu8495_a_serene_mantis-like_tall_alien_with_elegant_folded_f_8e8deedc-d156-4f3d-893c-98566cdba9c7_0.png',
+  terran:     'assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png'
+};
 
 const GENES = ['grey','reptilian','anunnaki','pleiadian','sirian','arcturian','heptapod','trisolaran','lyran','orion','andromedan','mantis'];
 
@@ -621,10 +728,12 @@ const STRINGS = {
   zh:{
     landingTitle:'外星基因\n检测报告',
     landingSubtitle:'Alien DNA Scan · Project Recall',
-    storyP1:'人类基因组计划完成后，科学家确认：人类DNA中约有8%来自远古病毒插入，功能不明，长期被归档为"垃圾DNA"。',
-    storyP2:'传说中，一个代号「母星召回计划」的跨国小组在这8%里识别出了12段无法用地球演化解释的休眠序列——像不同厂商留在产品里的出厂标记。',
-    storyP3:'现在，档案库的自助扫描端口"泄露"了。你面前的，就是那个端口。',
-    storyP4:'扫一下，看看你是哪个星球的批次。',
+    storyP1:'远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。',
+    storyP2:'直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。',
+    storyP3:'后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。',
+    storyP4:'「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。',
+    storyP5:'这个端口，是计划的内部设备。它不应出现在这里。',
+    storyWarning:'接入即受测。检测不可逆。',
     btnAccess:'⊕ 接入扫描端口',
     btnRefuse:'拒绝接入',
     disclaimer:'本扫描为娱乐内容，档案局并不存在（大概）。📜标签为都市传说，🎬为科幻虚构，仅🔬标签为真实科学。',
@@ -694,10 +803,12 @@ const STRINGS = {
   en:{
     landingTitle:'Alien DNA\nScan Report',
     landingSubtitle:'Alien DNA Scan · Project Recall',
-    storyP1:'After the Human Genome Project, scientists confirmed: roughly 8% of human DNA comes from ancient viral insertions — function unknown, long archived as "junk DNA." 🔬',
-    storyP2:'Legend has it a cross-national team codenamed "Project Recall" identified 12 dormant sequences in that 8% that defy terrestrial evolution — like factory stamps different manufacturers leave in their products.',
-    storyP3:'Now, the archive\'s self-service scan port has "leaked." What stands before you is that port.',
-    storyP4:'Run the scan. Find out which planet\'s production batch you are.',
+    storyP1:'Ancient texts repeat the same account: non-terrestrial entities arriving in cycles, leaving "marks" on humans. For centuries, this was filed as myth.',
+    storyP2:'Then gene sequencing produced a number: about 8% of human DNA has no known origin. Science calls it junk.',
+    storyP3:'Within that 8%, twelve dormant sequences were isolated. Each one matches an alien signature. The insertions are ancient. The source: unknown. The purpose: unknown.',
+    storyP4:'Project Recall was built for one task: register every carrier before the window opens.',
+    storyP5:'This port is internal equipment. It should not be here.',
+    storyWarning:'Connection means testing. Testing is irreversible.',
     btnAccess:'⊕ CONNECT TO SCAN PORT',
     btnRefuse:'Decline Access',
     disclaimer:'This scan is entertainment. The Archive does not exist (probably). 📜 = urban legend, 🎬 = sci-fi fiction, only 🔬 = real science.',
@@ -801,10 +912,16 @@ function genArchiveId(){
   return s;
 }
 
+const BG_MAP={landing:'landing',idgen:'quiz',seg:'quiz',notice:'quiz',quiz:'quiz',scan:'quiz',result:'result','terran-a':'result','terran-b':'result'};
+function setBg(type){
+  const el=document.getElementById('bgLayer');
+  if(el){el.className='bg-env bg-'+type;}
+}
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   const sc=document.getElementById('screen-'+id);
   if(sc){sc.classList.add('active');sc.scrollIntoView({behavior:'smooth',block:'start'})}
+  setBg(BG_MAP[id]||'landing');
 }
 
 // ============================================================
@@ -1039,8 +1156,9 @@ function renderResultPage(){
       <span class="result-stamp">${s.stampDecrypted}</span>
     </div>
 
-    <div class="portrait-placeholder" data-label="${d.en||gdata.zh.en}" style="font-size:80px">
-      ${gdata.emoji}
+    <div class="gene-portrait-wrap">
+      <img class="gene-portrait-img" src="${PORTRAIT_FILES[g]||''}" alt="${d.name||gdata.zh.name}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="portrait-fallback" aria-hidden="true">⊕</div>
     </div>
 
     <div class="gene-name">${d.name||gdata.zh.name}</div>
@@ -1137,7 +1255,8 @@ function showCert(type){
     card.className='terran-cert';
     document.getElementById('certMainTitle').textContent=type==='terran-a'?s.certTitleTerranA:s.certTitleTerranB;
     document.getElementById('certMainTitleEn').textContent=type==='terran-a'?s.certTitleTerranAEn:s.certTitleTerranBEn;
-    document.getElementById('certPortrait').textContent='🌍';
+    const cpT=document.getElementById('certPortrait');
+    cpT.innerHTML=`<img class="cert-portrait-img" src="${PORTRAIT_FILES.terran}" alt="Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.textContent='🌍'">`;
     document.getElementById('certIdSpan').textContent=type==='terran-a'?'RC-UNREGISTERED':archiveId;
     document.getElementById('certDateSpan').textContent=today;
     document.getElementById('certGeneName').textContent='铁血地球人';
@@ -1152,7 +1271,8 @@ function showCert(type){
     const d=gdata[lang]||gdata.zh;
     document.getElementById('certMainTitle').textContent=s.certTitle;
     document.getElementById('certMainTitleEn').textContent=s.certTitleEn;
-    document.getElementById('certPortrait').textContent=gdata.emoji;
+    const cpN=document.getElementById('certPortrait');
+    cpN.innerHTML=`<img class="cert-portrait-img" src="${PORTRAIT_FILES[g]||''}" alt="${d.name||gdata.zh.name}" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.parentElement.textContent='${gdata.emoji}'">`;
     document.getElementById('certIdSpan').textContent=archiveId;
     document.getElementById('certDateSpan').textContent=today;
     document.getElementById('certGeneName').textContent=d.name||gdata.zh.name;
@@ -1180,17 +1300,23 @@ function closeCert(){
 
 async function downloadCert(){
   const card=document.getElementById('cert-card');
+  // Wait for cert portrait img to load
+  const imgs=[...card.querySelectorAll('img')];
+  await Promise.all(imgs.map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=r;img.onerror=r;})));
   try{
-    const canvas=await html2canvas(card,{
-      backgroundColor:'#14130f',
-      scale:2,
-      useCORS:true,
-      allowTaint:true
-    });
-    const a=document.createElement('a');
-    a.href=canvas.toDataURL('image/png');
-    a.download=`召回血统认证书_${archiveId||'RC'}.png`;
-    a.click();
+    const canvas=await html2canvas(card,{backgroundColor:'#14130f',scale:2,useCORS:true,logging:false});
+    const dataUrl=canvas.toDataURL('image/png');
+    const fname=`召回血统认证书_${archiveId||'RC'}.png`;
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+    if(isIOS){
+      const w=window.open();
+      if(w){w.document.write(`<img src="${dataUrl}" style="max-width:100%;display:block"><p style="font-family:sans-serif;color:#888;font-size:13px;padding:8px">长按图片保存 · Long-press to save</p>`);w.document.close();}
+      else{alert('长按图片保存 / Long-press image to save');}
+    }else{
+      const a=document.createElement('a');
+      a.href=dataUrl;a.download=fname;
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+    }
   }catch(e){
     alert('导出失败，请截图保存 / Export failed, please screenshot.');
   }
@@ -1267,6 +1393,43 @@ function runBalanceCheck(){
 }
 
 // ============================================================
+// DUST PARTICLES
+// ============================================================
+function initParticles(){
+  const canvas=document.getElementById('dustCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const mobile=window.innerWidth<=768;
+  const N=mobile?25:50;
+  function resize(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resize();
+  window.addEventListener('resize',resize,{passive:true});
+  const pts=Array.from({length:N},()=>({
+    x:Math.random()*window.innerWidth,
+    y:Math.random()*window.innerHeight,
+    r:Math.random()*1.4+.3,
+    vx:(Math.random()-.5)*.25,
+    vy:(Math.random()-.5)*.15-.04,
+    o:Math.random()*.35+.05
+  }));
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pts.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(200,134,26,${p.o})`;
+      ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.y<-4)p.y=canvas.height+4;
+      if(p.x<-4)p.x=canvas.width+4;
+      if(p.x>canvas.width+4)p.x=-4;
+    });
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+// ============================================================
 // INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded',()=>{
@@ -1274,6 +1437,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('langBtn').textContent=lang==='zh'?'EN':'中';
   document.documentElement.lang=lang;
   runBalanceCheck();
+  initParticles();
 });
 </script>
 </body>
