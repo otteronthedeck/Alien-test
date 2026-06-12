@@ -198,6 +198,34 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 #cert-card.terran-cert .cert-rarity{color:#c07060}
 
 /* RESPONSIVE */
+/* === ATMOSPHERE FX === */
+#fxLayer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.fx-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:opacity}
+.fx-bg.on{opacity:1}
+.fx-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,15,13,.5) 0%,rgba(16,15,13,.66) 55%,rgba(16,15,13,.82) 100%)}
+.fx-fog{position:absolute;width:170%;height:170%;left:-35%;top:-35%;background:radial-gradient(ellipse at 30% 45%,rgba(201,197,187,.075),transparent 58%),radial-gradient(ellipse at 75% 70%,rgba(138,122,92,.06),transparent 52%);animation:fxdrift 44s ease-in-out infinite alternate;will-change:transform}
+.fx-fog.fb{animation-duration:67s;animation-direction:alternate-reverse;background:radial-gradient(ellipse at 62% 28%,rgba(201,197,187,.05),transparent 55%)}
+@keyframes fxdrift{from{transform:translate3d(-3.5%,-2%,0)}to{transform:translate3d(3.5%,2.5%,0)}}
+#fxDust{position:absolute;inset:0}
+#fxDust span{position:absolute;border-radius:50%;background:rgba(232,228,220,.9);animation:fxfloat linear infinite}
+@keyframes fxfloat{from{transform:translateY(0)}to{transform:translateY(-120vh)}}
+.fx-vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.5) 100%)}
+.screen{position:relative;z-index:2}
+.gene-portrait-wrap{position:relative;margin-bottom:24px;border:1px solid var(--bg3);background:#14130f;overflow:hidden}
+.gene-portrait-wrap .gene-portrait{display:block;width:100%;max-height:340px;object-fit:cover;object-position:center 20%;margin-bottom:0;border:0}
+.gene-portrait-wrap::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 70%,rgba(16,15,13,.45))}
+.portrait-tag{position:absolute;bottom:10px;right:12px;font-family:var(--mono);font-size:10px;color:rgba(232,228,220,.78);letter-spacing:.15em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,.85);z-index:1}
+.btn-primary{box-shadow:0 0 20px rgba(200,134,26,.22)}
+.btn-primary:active{box-shadow:0 0 30px rgba(200,134,26,.45)}
+.opt-btn{background:rgba(24,23,21,.78)}
+.opt-btn.selected{box-shadow:0 0 16px rgba(200,134,26,.3)}
+.opt-btn::before,.opt-btn::after{content:'';position:absolute;width:3px;height:3px;background:rgba(138,133,128,.5)}
+.opt-btn::before{top:5px;left:5px}
+.opt-btn::after{bottom:5px;right:5px}
+.story-block{background:rgba(18,17,15,.66)}
+.story-final{font-family:var(--mono);color:var(--accent)!important;font-style:normal!important;font-size:14px!important;letter-spacing:.08em;border-top:1px dashed rgba(200,134,26,.35);padding-top:12px;margin-top:4px}
+.btn-primary,.opt-btn{min-height:44px}
+@media (prefers-reduced-motion:reduce){.fx-fog,#fxDust span{animation:none}}
 @media(max-width:480px){
   .landing-title{font-size:28px}
   .gene-name{font-size:26px}
@@ -207,6 +235,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </style>
 </head>
 <body>
+<div id="fxLayer" aria-hidden="true"><div class="fx-bg" id="fxBgA"></div><div class="fx-bg" id="fxBgB"></div><div class="fx-fog fa"></div><div class="fx-fog fb"></div><div id="fxDust"></div><div class="fx-vig"></div></div>
 <div class="fog"></div>
 
 <div class="sys-header">
@@ -222,10 +251,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       <h1 class="landing-title" data-i18n="landingTitle">外星基因<br>检测报告</h1>
       <div class="landing-sub" data-i18n="landingSubtitle">Alien DNA Scan · Project Recall</div>
       <div class="story-block">
-        <p data-i18n="storyP1">人类基因组计划完成后，科学家确认：人类DNA中约有8%来自远古病毒插入，功能不明，长期被归档为"垃圾DNA"。<span style="font-size:12px;color:var(--accent)">🔬</span></p>
-        <p data-i18n="storyP2">传说中，一个代号「母星召回计划」的跨国小组在这8%里识别出了<strong style="color:var(--white)">12段无法用地球演化解释的休眠序列</strong>——像不同厂商留在产品里的出厂标记。小组建立了加密档案库，持续登记携带者。<span style="font-size:12px;color:var(--sand)">📜</span></p>
-        <p data-i18n="storyP3">现在，档案库的自助扫描端口"泄露"了。你面前的，就是那个端口。</p>
-        <p data-i18n="storyP4">扫一下，看看你是哪个星球的批次。</p>
+        <p data-i18n="storyP1">远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。</p>
+        <p data-i18n="storyP2">直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。</p>
+        <p data-i18n="storyP3">后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。</p>
+        <p data-i18n="storyP4">「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。</p>
+        <p data-i18n="storyP5">这个端口，是计划的内部设备。它不应出现在这里。</p>
+        <p class="story-final" data-i18n="storyFinal">接入即受测。检测不可逆。</p>
       </div>
       <button class="btn-primary" onclick="startScan()" data-i18n="btnAccess">⊕ 接入扫描端口</button>
       <a class="btn-refuse" onclick="refuseAccess()" data-i18n="btnRefuse">拒绝接入</a>
@@ -244,7 +275,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="tn-label" data-i18n="terranNoticeLabel">⚠ 异常检测 ANOMALY DETECTED</div>
         <div class="tn-text" data-i18n="terranNoticeText">受测者拒绝授权……正在关闭端口……<br>等等。<br>检测到异常：你抵抗了好奇心。</div>
       </div>
-      <div class="portrait-placeholder" style="font-size:80px;margin-bottom:24px;border-color:var(--red)" data-label="IRON-BLOODED TERRAN">🌍</div>
+      <div class="gene-portrait-wrap" style="margin-bottom:24px;border-color:var(--red)"><img class="gene-portrait" src="assets/gene-terran.png" alt="IRON-BLOODED TERRAN" loading="lazy" onerror="pfb(this,'🌍')"><span class="portrait-tag">IRON-BLOODED TERRAN</span></div>
       <div class="gene-name" style="color:var(--white)" data-i18n="terranTitle">铁血地球人</div>
       <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH A</div>
       <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
@@ -321,7 +352,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <span class="tech">SCAN COMPLETE // ANOMALY: SILENT SEQUENCE</span>
         <span class="result-stamp" style="background:var(--red)" data-i18n="stampPure">纯血认证</span>
       </div>
-      <div class="portrait-placeholder" style="font-size:80px;margin-bottom:24px;border-color:var(--red)" data-label="IRON-BLOODED TERRAN">🌍</div>
+      <div class="gene-portrait-wrap" style="margin-bottom:24px;border-color:var(--red)"><img class="gene-portrait" src="assets/gene-terran.png" alt="IRON-BLOODED TERRAN" loading="lazy" onerror="pfb(this,'🌍')"><span class="portrait-tag">IRON-BLOODED TERRAN</span></div>
       <div class="gene-name" data-i18n="terranTitle">铁血地球人</div>
       <div class="gene-name-en">THE IRON-BLOODED TERRAN · PATH B · SILENT SEQUENCE</div>
       <div class="rarity-badge" style="border-color:rgba(138,47,35,.5);color:#c07060" data-i18n="terranRarity">全档案库仅 0.1% · 全谱系真正的天花板</div>
@@ -389,6 +420,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ============================================================
 
 const GENES = ['grey','reptilian','anunnaki','pleiadian','sirian','arcturian','heptapod','trisolaran','lyran','orion','andromedan','mantis'];
+// === IMAGE ASSETS ===
+const ASSET_PORTRAIT={};GENES.concat(['terran']).forEach(g=>ASSET_PORTRAIT[g]='assets/gene-'+g+'.png');
+const ASSET_BG={landing:'assets/bg-landing.png',quiz:'assets/bg-quiz.png',result:'assets/bg-result.png'};
+function pfb(img,emoji){const d=document.createElement('div');d.className='portrait-placeholder';d.style.fontSize='80px';d.setAttribute('data-label',img.alt||'');d.textContent=emoji;const w=img.closest('.gene-portrait-wrap');(w||img).replaceWith(d)}
+function setCertPortrait(id,emoji){const el=document.getElementById('certPortrait');el.textContent='';const im=document.createElement('img');im.src=ASSET_PORTRAIT[id];im.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center 20%';im.onerror=function(){el.textContent=emoji};el.appendChild(im)}
 
 const GENE_DATA = {
   grey: {
@@ -621,10 +657,12 @@ const STRINGS = {
   zh:{
     landingTitle:'外星基因\n检测报告',
     landingSubtitle:'Alien DNA Scan · Project Recall',
-    storyP1:'人类基因组计划完成后，科学家确认：人类DNA中约有8%来自远古病毒插入，功能不明，长期被归档为"垃圾DNA"。',
-    storyP2:'传说中，一个代号「母星召回计划」的跨国小组在这8%里识别出了12段无法用地球演化解释的休眠序列——像不同厂商留在产品里的出厂标记。',
-    storyP3:'现在，档案库的自助扫描端口"泄露"了。你面前的，就是那个端口。',
-    storyP4:'扫一下，看看你是哪个星球的批次。',
+    storyP1:'远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。',
+    storyP2:'直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。',
+    storyP3:'后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。',
+    storyP4:'「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。',
+    storyP5:'这个端口，是计划的内部设备。它不应出现在这里。',
+    storyFinal:'接入即受测。检测不可逆。',
     btnAccess:'⊕ 接入扫描端口',
     btnRefuse:'拒绝接入',
     disclaimer:'本扫描为娱乐内容，档案局并不存在（大概）。📜标签为都市传说，🎬为科幻虚构，仅🔬标签为真实科学。',
@@ -694,10 +732,12 @@ const STRINGS = {
   en:{
     landingTitle:'Alien DNA\nScan Report',
     landingSubtitle:'Alien DNA Scan · Project Recall',
-    storyP1:'After the Human Genome Project, scientists confirmed: roughly 8% of human DNA comes from ancient viral insertions — function unknown, long archived as "junk DNA." 🔬',
-    storyP2:'Legend has it a cross-national team codenamed "Project Recall" identified 12 dormant sequences in that 8% that defy terrestrial evolution — like factory stamps different manufacturers leave in their products.',
-    storyP3:'Now, the archive\'s self-service scan port has "leaked." What stands before you is that port.',
-    storyP4:'Run the scan. Find out which planet\'s production batch you are.',
+    storyP1:'Ancient texts repeat the same account: non-terrestrial entities arriving in cycles, leaving "marks" on humans. For centuries, this was filed as myth.',
+    storyP2:'Then gene sequencing produced a number: about 8% of human DNA has no known origin. Science calls it junk.',
+    storyP3:'Within that 8%, twelve dormant sequences were isolated. Each one matches an alien signature. The insertions are ancient. The source: unknown. The purpose: unknown.',
+    storyP4:'Project Recall was built for one task: register every carrier before the window opens.',
+    storyP5:'This port is internal equipment. It should not be here.',
+    storyFinal:'Connection means testing. Testing is irreversible.',
     btnAccess:'⊕ CONNECT TO SCAN PORT',
     btnRefuse:'Decline Access',
     disclaimer:'This scan is entertainment. The Archive does not exist (probably). 📜 = urban legend, 🎬 = sci-fi fiction, only 🔬 = real science.',
@@ -801,10 +841,39 @@ function genArchiveId(){
   return s;
 }
 
+// === SCENE BACKGROUND SYSTEM ===
+const SCENE_BG={'landing':'landing','terran-a':'landing','terran-b':'result','result':'result'};
+let bgCur='',bgFlip=false;
+function setSceneBg(id){
+  const key=SCENE_BG[id]||'quiz';
+  if(key===bgCur)return;bgCur=key;
+  const a=document.getElementById('fxBgA'),b=document.getElementById('fxBgB');
+  if(!a||!b)return;
+  const show=bgFlip?a:b,hide=bgFlip?b:a;bgFlip=!bgFlip;
+  show.style.backgroundImage='url("'+ASSET_BG[key]+'")';
+  show.classList.add('on');hide.classList.remove('on');
+}
+function initDust(){
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const d=document.getElementById('fxDust');if(!d)return;
+  const n=innerWidth<480?16:24;
+  for(let i=0;i<n;i++){const s=document.createElement('span');
+    s.style.left=Math.random()*100+'%';s.style.top=(60+Math.random()*55)+'%';
+    const dur=14+Math.random()*20;s.style.animationDuration=dur+'s';s.style.animationDelay=(-Math.random()*dur)+'s';
+    const sz=(1+Math.random()*1.8).toFixed(1);s.style.width=sz+'px';s.style.height=sz+'px';
+    s.style.opacity=(0.12+Math.random()*0.3).toFixed(2);d.appendChild(s)}
+}
+document.addEventListener('DOMContentLoaded',function(){
+  initDust();
+  Object.values(ASSET_BG).forEach(u=>{const im=new Image();im.src=u});
+  setSceneBg('landing');
+});
+
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   const sc=document.getElementById('screen-'+id);
   if(sc){sc.classList.add('active');sc.scrollIntoView({behavior:'smooth',block:'start'})}
+  setSceneBg(id);
 }
 
 // ============================================================
@@ -1039,8 +1108,9 @@ function renderResultPage(){
       <span class="result-stamp">${s.stampDecrypted}</span>
     </div>
 
-    <div class="portrait-placeholder" data-label="${d.en||gdata.zh.en}" style="font-size:80px">
-      ${gdata.emoji}
+    <div class="gene-portrait-wrap">
+      <img class="gene-portrait" src="${ASSET_PORTRAIT[resultGene]}" alt="${d.en||gdata.zh.en}" loading="lazy" onerror="pfb(this,'${gdata.emoji}')">
+      <span class="portrait-tag">${d.en||gdata.zh.en}</span>
     </div>
 
     <div class="gene-name">${d.name||gdata.zh.name}</div>
@@ -1137,7 +1207,7 @@ function showCert(type){
     card.className='terran-cert';
     document.getElementById('certMainTitle').textContent=type==='terran-a'?s.certTitleTerranA:s.certTitleTerranB;
     document.getElementById('certMainTitleEn').textContent=type==='terran-a'?s.certTitleTerranAEn:s.certTitleTerranBEn;
-    document.getElementById('certPortrait').textContent='🌍';
+    setCertPortrait('terran','🌍');
     document.getElementById('certIdSpan').textContent=type==='terran-a'?'RC-UNREGISTERED':archiveId;
     document.getElementById('certDateSpan').textContent=today;
     document.getElementById('certGeneName').textContent='铁血地球人';
@@ -1152,7 +1222,7 @@ function showCert(type){
     const d=gdata[lang]||gdata.zh;
     document.getElementById('certMainTitle').textContent=s.certTitle;
     document.getElementById('certMainTitleEn').textContent=s.certTitleEn;
-    document.getElementById('certPortrait').textContent=gdata.emoji;
+    setCertPortrait(g,gdata.emoji);
     document.getElementById('certIdSpan').textContent=archiveId;
     document.getElementById('certDateSpan').textContent=today;
     document.getElementById('certGeneName').textContent=d.name||gdata.zh.name;
