@@ -24,9 +24,9 @@ html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'P
 
 /* ===== BACKGROUND ENV SYSTEM ===== */
 .bg-env{position:fixed;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;z-index:0;transition:opacity .8s ease}
-.bg-landing{background-image:url('assets/lyu8495_underground_archive_vault_endless_rows_of_weathered_f_ee87abdc-7cba-454e-a64e-24666b421e9a_0.png')}
-.bg-quiz{background-image:url('assets/lyu8495_vast_post-apocalyptic_wasteland_at_dusk_a_lone_rusted_61433dac-db20-438b-b43d-c5ff97364688_0.png')}
-.bg-result{background-image:url('assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_ed963d20-c24a-47da-87a7-f566b1702f9c_1.png')}
+.bg-landing{background-image:url('assets/bg-result.png')}
+.bg-quiz{background-image:url('assets/bg-quiz.png')}
+.bg-result{background-image:url('assets/bg-landing.png')}
 .bg-dimmer{position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:1;pointer-events:none}
 /* FOG DRIFT LAYERS */
 .fog-drift{position:fixed;inset:0;pointer-events:none;z-index:2;will-change:transform,opacity}
@@ -330,7 +330,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <div class="tn-text" data-i18n="terranNoticeText">受测者拒绝授权……正在关闭端口……<br>等等。<br>检测到异常：你抵抗了好奇心。</div>
       </div>
       <div class="gene-portrait-wrap" style="border-color:var(--red);margin-bottom:24px">
-        <img class="gene-portrait-img" src="assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png" alt="Iron-Blooded Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img class="gene-portrait-img" src="assets/gene-terran.png" alt="Iron-Blooded Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portrait-fallback" aria-hidden="true">🌍</div>
       </div>
       <div class="gene-name" style="color:var(--white)" data-i18n="terranTitle">铁血地球人</div>
@@ -410,7 +410,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
         <span class="result-stamp" style="background:var(--red)" data-i18n="stampPure">纯血认证</span>
       </div>
       <div class="gene-portrait-wrap" style="border-color:var(--red);margin-bottom:24px">
-        <img class="gene-portrait-img" src="assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png" alt="Iron-Blooded Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <img class="gene-portrait-img" src="assets/gene-terran.png" alt="Iron-Blooded Terran" loading="lazy" onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex'">
         <div class="portrait-fallback" aria-hidden="true">🌍</div>
       </div>
       <div class="gene-name" data-i18n="terranTitle">铁血地球人</div>
@@ -480,19 +480,19 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ============================================================
 
 const PORTRAIT_FILES = {
-  grey:       'assets/lyu8495__a_grey_alien_with_smooth_grey_skin_oversized_black_a_14adaa36-94e3-4a14-b813-6c3c05607e17_0.png',
-  reptilian:  'assets/lyu8495_a_dignified_reptilian_humanoid_with_fine_emerald_scal_75fa3d73-40d2-4e51-9758-2c51593cec84_1.png',
-  anunnaki:   'assets/lyu8495_a_tall_regal_humanoid_with_ancient_Sumerian_braided_b_a7a25d6c-4e3b-4996-8322-f92436ba0278_2.png',
-  pleiadian:  'assets/lyu8495_a_luminous_nordic_humanoid_with_long_pale_hair_and_ge_9b6b1c57-1c6e-490e-82ab-4f82a4138a29_0.png',
-  sirian:     'assets/lyu8495_an_elegant_blue-skinned_humanoid_with_Egyptian_featur_4da7c38f-e821-4484-9179-6b607a4dc6a5_3.png',
-  arcturian:  'assets/lyu8495_an_ethereal_tall_being_with_elongated_head_and_faint__fed575b6-40cb-4295-9963-2d6c0efd52f0_1.png',
-  heptapod:   'assets/lyu8495_a_graceful_heptapod_alien_seven_limbs_emerging_from_s_c100d517-dfd2-434c-a2c2-babab8179a0f_1.png',
-  trisolaran: 'assets/lyu8495_a_humanoid_figure_with_shimmering_parchment-like_dehy_bfe05c86-4e0f-4c92-869f-a8e85e4e1162_2.png',
-  lyran:      'assets/lyu8495_a_feline_humanoid_alien_with_amber_cat_eyes_Lion_comb_633956ea-86b8-493b-9a7a-7a29a345b8c2_2.png',
-  orion:      'assets/lyu8495_a_battle-hardened_alien_warrior_with_sharp_features_a_b9b8496a-c45a-4f39-b57c-8e91d5e17e40_1.png',
-  andromedan: 'assets/lyu8495_a_free-spirited_androgynous_alien_with_wind-blown_hai_e61bb0c5-363e-4d51-9681-ef418ad6b025_1.png',
-  mantis:     'assets/lyu8495_a_serene_mantis-like_tall_alien_with_elegant_folded_f_8e8deedc-d156-4f3d-893c-98566cdba9c7_0.png',
-  terran:     'assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png'
+  grey:       'assets/gene-grey.png',
+  reptilian:  'assets/gene-reptilian.png',
+  anunnaki:   'assets/gene-anunnaki.png',
+  pleiadian:  'assets/gene-pleiadian.png',
+  sirian:     'assets/gene-sirian.png',
+  arcturian:  'assets/gene-arcturian.png',
+  heptapod:   'assets/gene-heptapod.png',
+  trisolaran: 'assets/gene-trisolaran.png',
+  lyran:      'assets/gene-lyran.png',
+  orion:      'assets/gene-orion.png',
+  andromedan: 'assets/gene-andromedan.png',
+  mantis:     'assets/gene-mantis.png',
+  terran:     'assets/gene-terran.png'
 };
 
 const GENES = ['grey','reptilian','anunnaki','pleiadian','sirian','arcturian','heptapod','trisolaran','lyran','orion','andromedan','mantis'];
