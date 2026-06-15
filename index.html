@@ -64,28 +64,43 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* LANDING */
 /* === HAMCUS TERMINAL FRAME === */
-.hx-win{border:1px solid rgba(201,197,187,.22);background:rgba(10,13,12,.55);position:relative;margin:0 auto;max-width:760px}
+.hx-win{border:1px solid rgba(201,197,187,.28);background:rgba(8,11,10,.74);position:relative;margin:0 auto;max-width:480px}
+.landing-split{min-height:100vh;display:flex;flex-direction:column;padding:0;margin-top:0}
+.lz-topbar{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;margin:54px 14px 0;border:1px solid rgba(201,197,187,.28);background:rgba(8,11,10,.72);font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--text);text-transform:uppercase}
+.lz-topbar .tag{color:var(--accent);border:1px solid rgba(232,73,29,.55);padding:0 5px;font-size:10px;margin-left:4px}
+.lz-topbar .lz-meta-r{color:var(--text2);font-size:10px;opacity:.7}
+.lz-hero{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:40px 24px;min-height:42vh}
+.lz-hero .landing-title{text-shadow:0 2px 20px rgba(0,0,0,.9)}
+.lz-hero .landing-sub{text-shadow:0 1px 8px rgba(0,0,0,.9)}
+.lz-panel{position:relative;margin:0 14px;padding:20px 22px;border:1px solid rgba(201,197,187,.28);background:rgba(8,11,10,.8)}
+.lz-actions{margin:10px 14px 30px}
+@media(min-width:600px){
+  .lz-topbar,.lz-panel,.lz-actions{max-width:540px;margin-left:auto;margin-right:auto}
+  .lz-topbar{margin-top:60px}
+  .lz-hero{align-items:center;text-align:center}
+}
 .hx-titlebar{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid rgba(201,197,187,.22);font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--text);text-transform:uppercase}
 .hx-titlebar .l{display:flex;align-items:center;gap:9px}
 .hx-titlebar .tag{color:var(--accent);border:1px solid rgba(232,73,29,.55);padding:0 5px;font-size:10px}
 .hx-titlebar .x{color:var(--text2);font-size:14px;line-height:1}
-.hx-body{padding:30px 30px 26px;position:relative}
+.hx-body{padding:22px 22px 20px;position:relative}
 .hx-corner{position:absolute;width:13px;height:13px;border-color:var(--accent);border-style:solid;border-width:0}
 .hx-corner.tl{top:6px;left:6px;border-top-width:1.5px;border-left-width:1.5px}
 .hx-corner.tr{top:6px;right:6px;border-top-width:1.5px;border-right-width:1.5px}
 .hx-corner.bl{bottom:6px;left:6px;border-bottom-width:1.5px;border-left-width:1.5px}
 .hx-corner.br{bottom:6px;right:6px;border-bottom-width:1.5px;border-right-width:1.5px}
 .hx-meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--text2);text-transform:uppercase;opacity:.7}
-.hx-divider{height:1px;background:rgba(201,197,187,.16);margin:22px 0}
+.hx-divider{height:1px;background:rgba(201,197,187,.16);margin:14px 0}
 .hx-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text2);text-transform:uppercase;opacity:.55}
-.hx-story p{margin-bottom:13px;line-height:1.85;font-size:14px;color:var(--text)}
+.hx-story p{margin-bottom:9px;line-height:1.7;font-size:13px;color:var(--text)}
 .hx-story p:last-child{margin-bottom:0}
 .hx-final{font-family:var(--pixel)!important;color:var(--accent)!important;font-size:17px!important;letter-spacing:.12em;margin-top:18px!important;padding-top:14px;border-top:1px dashed rgba(232,73,29,.3);text-shadow:0 0 8px rgba(232,73,29,.35)}
-.hx-btn{display:block;width:100%;padding:15px 24px;background:transparent;color:var(--accent);border:1px solid rgba(232,73,29,.5);font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;text-align:left;cursor:pointer;transition:.2s;margin-top:6px}
-.hx-btn:hover{background:rgba(232,73,29,.1);box-shadow:0 0 18px rgba(232,73,29,.2)}
-.hx-btn .ar{float:right;opacity:.7}
-.hx-refuse{display:block;text-align:left;margin-top:12px;color:var(--text2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;opacity:.55;transition:.2s}
-.hx-refuse:hover{opacity:.85;color:var(--text)}
+.hx-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:17px 24px;background:var(--accent);color:#0d100f;border:1px solid var(--accent);font-family:var(--mono);font-weight:700;font-size:14px;letter-spacing:.22em;text-transform:uppercase;text-align:left;cursor:pointer;transition:.2s;margin-top:8px;box-shadow:0 0 0 rgba(232,73,29,.5);animation:btnpulse 2.4s ease-in-out infinite}
+.hx-btn:hover{background:#ff5a2e;box-shadow:0 0 26px rgba(232,73,29,.6)}
+@keyframes btnpulse{0%,100%{box-shadow:0 0 8px rgba(232,73,29,.3)}50%{box-shadow:0 0 24px rgba(232,73,29,.65)}}
+.hx-btn .ar{opacity:.85;font-size:16px}
+.hx-refuse{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:9px;padding:12px 24px;color:var(--text);background:transparent;border:1px solid rgba(201,197,187,.35);font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:.2s;text-decoration:none}
+.hx-refuse:hover{border-color:var(--text);background:rgba(201,197,187,.07)}
 @media(max-width:560px){.hx-body{padding:22px 18px 20px}.hx-win{max-width:100%}}
 /* === 全站统一Hamcus窗口框架 === */
 .quiz-wrap,.result-wrap,.terran-wrap,.scan-wrap,.seg-wrap,.idgen-wrap,.notice-wrap{
@@ -110,7 +125,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   .quiz-wrap,.result-wrap,.terran-wrap,.scan-wrap,.seg-wrap,.idgen-wrap,.notice-wrap{
     max-width:100%;padding:22px 18px 20px;margin-top:48px}
 }
-.landing-wrap{padding:46px 16px 40px;margin-top:54px}
+.landing-wrap{padding:30vh 16px 40px;margin-top:0;min-height:100vh;display:flex;align-items:flex-end;justify-content:center}
 .landing-code{font-family:var(--pixel);font-size:10px;color:var(--signal-red);letter-spacing:.2em;margin-bottom:20px;opacity:.8}
 .landing-title{font-family:var(--pixel);font-size:clamp(30px,6.5vw,50px);font-weight:400;line-height:1.25;color:var(--white);margin-bottom:8px;letter-spacing:.04em;text-shadow:0 0 10px rgba(232,73,29,.28)}
 .landing-sub{font-family:var(--pixel);font-size:13px;color:var(--signal-red);letter-spacing:.2em;margin-bottom:32px;text-transform:uppercase}
@@ -314,40 +329,41 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 <div id="app">
   <!-- LANDING -->
   <div class="screen active" id="screen-landing">
-    <div class="landing-wrap">
-      <div class="hx-win">
-        <div class="hx-titlebar">
-          <span class="l"><span>//</span> <span data-i18n="winTitle">母星召回计划 · 档案库</span> <span class="tag">RC-12</span></span>
-          <span class="x">×</span>
+    <div class="landing-split">
+      <!-- 顶部细标题条 -->
+      <div class="lz-topbar">
+        <span class="l">// <span data-i18n="winTitle">母星召回计划 · 档案库</span> <span class="tag">RC-12</span></span>
+        <span class="lz-meta-r">VER 3.1 // LEAKED</span>
+      </div>
+
+      <!-- 中部:仅大标题悬浮,大量留白露出背景触须 -->
+      <div class="lz-hero">
+        <div class="hx-meta" style="margin-bottom:10px">ARCHIVE ACCESS PORT // CLASSIFICATION: LEAKED</div>
+        <h1 class="landing-title" data-i18n="landingTitle">外星基因<br>检测报告</h1>
+        <div class="landing-sub" data-i18n="landingSubtitle">Alien DNA Scan · Project Recall</div>
+      </div>
+
+      <!-- 底部:故事文本窗(紧凑) -->
+      <div class="lz-panel">
+        <span class="hx-corner tl"></span><span class="hx-corner tr"></span>
+        <span class="hx-corner bl"></span><span class="hx-corner br"></span>
+        <div class="hx-story">
+          <p data-i18n="storyP1">远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。</p>
+          <p data-i18n="storyP2">直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。</p>
+          <p data-i18n="storyP3">后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。</p>
+          <p data-i18n="storyP4">「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。</p>
+          <p data-i18n="storyP5">这个端口，是计划的内部设备。它不应出现在这里。</p>
+          <p class="hx-final" data-i18n="storyFinal">接入即受测。检测不可逆。</p>
         </div>
-        <div class="hx-body">
-          <span class="hx-corner tl"></span><span class="hx-corner tr"></span>
-          <span class="hx-corner bl"></span><span class="hx-corner br"></span>
+      </div>
 
-          <div class="hx-meta">ARCHIVE ACCESS PORT // VER 3.1 // CLASSIFICATION: LEAKED</div>
-          <h1 class="landing-title" data-i18n="landingTitle" style="margin-top:14px">外星基因<br>检测报告</h1>
-          <div class="landing-sub" data-i18n="landingSubtitle" style="margin-bottom:0">Alien DNA Scan · Project Recall</div>
-
-          <div class="hx-divider"></div>
-
-          <div class="hx-story">
-            <p data-i18n="storyP1">远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。</p>
-            <p data-i18n="storyP2">直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。</p>
-            <p data-i18n="storyP3">后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。</p>
-            <p data-i18n="storyP4">「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。</p>
-            <p data-i18n="storyP5">这个端口，是计划的内部设备。它不应出现在这里。</p>
-            <p class="hx-final" data-i18n="storyFinal">接入即受测。检测不可逆。</p>
-          </div>
-
-          <div class="hx-divider"></div>
-
-          <button class="hx-btn" onclick="startScan()" data-i18n="btnAccess">接入扫描端口 <span class="ar">→</span></button>
-          <a class="hx-refuse" onclick="refuseAccess()" data-i18n="btnRefuse">// 拒绝接入</a>
-
-          <div class="hx-foot">
-            <span data-i18n="disclaimer">娱乐内容 · 档案局并不存在（大概）</span>
-            <span>LAT 30°N // SEQ.00-12</span>
-          </div>
+      <!-- 底部:独立按钮(不包框) -->
+      <div class="lz-actions">
+        <button class="hx-btn" onclick="startScan()"><span data-i18n="btnAccess">接入扫描端口</span><span class="ar">→</span></button>
+        <a class="hx-refuse" onclick="refuseAccess()"><span data-i18n="btnRefuse">拒绝接入</span><span class="ar">×</span></a>
+        <div class="hx-foot" style="margin-top:14px">
+          <span data-i18n="disclaimer">娱乐内容 · 档案局并不存在（大概）</span>
+          <span>LAT 30°N // SEQ.00-12</span>
         </div>
       </div>
     </div>
@@ -511,7 +527,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 const GENES = ['grey','reptilian','anunnaki','pleiadian','sirian','arcturian','heptapod','trisolaran','lyran','orion','andromedan','mantis'];
 // === IMAGE ASSETS ===
 const ASSET_PORTRAIT={"grey": "assets/lyu8495__a_grey_alien_with_smooth_grey_skin_oversized_black_a_14adaa36-94e3-4a14-b813-6c3c05607e17_0.png", "orion": "assets/lyu8495_a_battle-hardened_alien_warrior_with_sharp_features_a_b9b8496a-c45a-4f39-b57c-8e91d5e17e40_1.png", "terran": "assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png", "reptilian": "assets/lyu8495_a_dignified_reptilian_humanoid_with_fine_emerald_scal_75fa3d73-40d2-4e51-9758-2c51593cec84_1.png", "lyran": "assets/lyu8495_a_feline_humanoid_alien_with_amber_cat_eyes_Lion_comb_633956ea-86b8-493b-9a7a-7a29a345b8c2_2.png", "andromedan": "assets/lyu8495_a_free-spirited_androgynous_alien_with_wind-blown_hai_e61bb0c5-363e-4d51-9681-ef418ad6b025_1.png", "heptapod": "assets/lyu8495_a_graceful_heptapod_alien_seven_limbs_emerging_from_s_c100d517-dfd2-434c-a2c2-babab8179a0f_1.png", "trisolaran": "assets/lyu8495_a_humanoid_figure_with_shimmering_parchment-like_dehy_bfe05c86-4e0f-4c92-869f-a8e85e4e1162_2.png", "pleiadian": "assets/lyu8495_a_luminous_nordic_humanoid_with_long_pale_hair_and_ge_9b6b1c57-1c6e-490e-82ab-4f82a4138a29_0.png", "mantis": "assets/lyu8495_a_serene_mantis-like_tall_alien_with_elegant_folded_f_8e8deedc-d156-4f3d-893c-98566cdba9c7_0.png", "anunnaki": "assets/lyu8495_a_tall_regal_humanoid_with_ancient_Sumerian_braided_b_a7a25d6c-4e3b-4996-8322-f92436ba0278_2.png", "sirian": "assets/lyu8495_an_elegant_blue-skinned_humanoid_with_Egyptian_featur_4da7c38f-e821-4484-9179-6b607a4dc6a5_3.png", "arcturian": "assets/lyu8495_an_ethereal_tall_being_with_elongated_head_and_faint__fed575b6-40cb-4295-9963-2d6c0efd52f0_1.png"};
-const ASSET_BG={"landing": "assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_c82d0d94-cfc1-4332-a278-5570d295fa19_2.png", "result": "assets/lyu8495_underground_archive_vault_endless_rows_of_weathered_f_ee87abdc-7cba-454e-a64e-24666b421e9a_0.png", "quiz": "assets/lyu8495_vast_post-apocalyptic_wasteland_at_dusk_a_lone_rusted_61433dac-db20-438b-b43d-c5ff97364688_0.png", "terranbg": "assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_ed963d20-c24a-47da-87a7-f566b1702f9c_1.png"};
+const ASSET_BG={"landing": "assets/lyu8495_massive_ancient_tentacled_form_half-emerging_from_an__d76b4dee-7092-4d72-8622-f25a3daed445_0.png", "result": "assets/lyu8495_underground_archive_vault_endless_rows_of_weathered_f_ee87abdc-7cba-454e-a64e-24666b421e9a_0.png", "quiz": "assets/lyu8495_vast_post-apocalyptic_wasteland_at_dusk_a_lone_rusted_61433dac-db20-438b-b43d-c5ff97364688_0.png", "terranbg": "assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_ed963d20-c24a-47da-87a7-f566b1702f9c_1.png"};
 function pfb(img,emoji){const d=document.createElement('div');d.className='portrait-placeholder';d.style.fontSize='80px';d.setAttribute('data-label',img.alt||'');d.textContent=emoji;const w=img.closest('.gene-portrait-wrap');(w||img).replaceWith(d)}
 function setCertPortrait(id,emoji){const el=document.getElementById('certPortrait');el.textContent='';const im=document.createElement('img');im.src=ASSET_PORTRAIT[id];im.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center 20%';im.onerror=function(){el.textContent=emoji};el.appendChild(im)}
 
