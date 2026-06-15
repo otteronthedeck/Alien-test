@@ -25,7 +25,8 @@
   --bg3: #3a3936;
   --text: #c9c5bb;
   --text2: #8a8580;
-  --accent: #c8861a;
+  --accent: #e8491d;
+  --signal-red: #e8491d;
   --olive: #4a4f3d;
   --sand: #8a7a5c;
   --red: #8a2f23;
@@ -33,7 +34,7 @@
   --mono: 'Courier New', 'Lucida Console', monospace;
   --display: 'Boutique Gradient','Noto Sans SC','PingFang SC',sans-serif;
   --pixel: 'Boutique Gradient','Noto Sans SC',sans-serif;
-  --sans: 'Boutique 3D','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+  --sans: 'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{min-height:100vh;background:var(--bg);color:var(--text);font-family:var(--sans);letter-spacing:.01em;overflow-x:hidden}
@@ -43,7 +44,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* FOG */
 .fog{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 20% 80%,rgba(74,79,61,.15) 0,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(26,26,24,.4) 0,transparent 50%)}
-.fog::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(200,134,26,.04) 0,transparent 70%);animation:fogshift 8s ease-in-out infinite alternate}
+.fog::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(232,73,29,.04) 0,transparent 70%);animation:fogshift 8s ease-in-out infinite alternate}
 @keyframes fogshift{from{opacity:.5}to{opacity:1}}
 
 /* LAYOUT */
@@ -54,22 +55,69 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* HEADER */
 .sys-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--bg3);position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,24,.92);backdrop-filter:blur(4px)}
-.sys-logo{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.15em;text-transform:uppercase}
+.sys-logo{font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:.15em;text-transform:uppercase;opacity:.75}
 .lang-btn{background:none;border:1px solid var(--bg3);color:var(--text2);font-size:11px;font-family:var(--mono);padding:4px 10px;cursor:pointer;letter-spacing:.1em;transition:.2s}
-.lang-btn:hover{border-color:var(--accent);color:var(--accent)}
+.lang-btn:hover{border-color:var(--text);color:var(--text)}
 
 /* TECH ANNOTATIONS */
 .tech{font-family:var(--mono);font-size:9px;color:var(--sand);letter-spacing:.12em;text-transform:uppercase;opacity:.6}
 
 /* LANDING */
-.landing-wrap{padding:60px 24px 40px;margin-top:60px}
-.landing-code{font-family:var(--pixel);font-size:10px;color:var(--accent);letter-spacing:.2em;margin-bottom:20px;opacity:.8}
-.landing-title{font-family:var(--pixel);font-size:clamp(30px,6.5vw,50px);font-weight:400;line-height:1.25;color:var(--white);margin-bottom:8px;letter-spacing:.04em;text-shadow:0 0 8px rgba(200,134,26,.25)}
-.landing-sub{font-family:var(--pixel);font-size:13px;color:var(--accent);letter-spacing:.2em;margin-bottom:32px;text-transform:uppercase}
+/* === HAMCUS TERMINAL FRAME === */
+.hx-win{border:1px solid rgba(201,197,187,.22);background:rgba(10,13,12,.55);position:relative;margin:0 auto;max-width:760px}
+.hx-titlebar{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid rgba(201,197,187,.22);font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--text);text-transform:uppercase}
+.hx-titlebar .l{display:flex;align-items:center;gap:9px}
+.hx-titlebar .tag{color:var(--accent);border:1px solid rgba(232,73,29,.55);padding:0 5px;font-size:10px}
+.hx-titlebar .x{color:var(--text2);font-size:14px;line-height:1}
+.hx-body{padding:30px 30px 26px;position:relative}
+.hx-corner{position:absolute;width:13px;height:13px;border-color:var(--accent);border-style:solid;border-width:0}
+.hx-corner.tl{top:6px;left:6px;border-top-width:1.5px;border-left-width:1.5px}
+.hx-corner.tr{top:6px;right:6px;border-top-width:1.5px;border-right-width:1.5px}
+.hx-corner.bl{bottom:6px;left:6px;border-bottom-width:1.5px;border-left-width:1.5px}
+.hx-corner.br{bottom:6px;right:6px;border-bottom-width:1.5px;border-right-width:1.5px}
+.hx-meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--text2);text-transform:uppercase;opacity:.7}
+.hx-divider{height:1px;background:rgba(201,197,187,.16);margin:22px 0}
+.hx-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--text2);text-transform:uppercase;opacity:.55}
+.hx-story p{margin-bottom:13px;line-height:1.85;font-size:14px;color:var(--text)}
+.hx-story p:last-child{margin-bottom:0}
+.hx-final{font-family:var(--pixel)!important;color:var(--accent)!important;font-size:17px!important;letter-spacing:.12em;margin-top:18px!important;padding-top:14px;border-top:1px dashed rgba(232,73,29,.3);text-shadow:0 0 8px rgba(232,73,29,.35)}
+.hx-btn{display:block;width:100%;padding:15px 24px;background:transparent;color:var(--accent);border:1px solid rgba(232,73,29,.5);font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;text-align:left;cursor:pointer;transition:.2s;margin-top:6px}
+.hx-btn:hover{background:rgba(232,73,29,.1);box-shadow:0 0 18px rgba(232,73,29,.2)}
+.hx-btn .ar{float:right;opacity:.7}
+.hx-refuse{display:block;text-align:left;margin-top:12px;color:var(--text2);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;opacity:.55;transition:.2s}
+.hx-refuse:hover{opacity:.85;color:var(--text)}
+@media(max-width:560px){.hx-body{padding:22px 18px 20px}.hx-win{max-width:100%}}
+/* === 全站统一Hamcus窗口框架 === */
+.quiz-wrap,.result-wrap,.terran-wrap,.scan-wrap,.seg-wrap,.idgen-wrap,.notice-wrap{
+  border:1px solid rgba(201,197,187,.22);background:rgba(10,13,12,.62);
+  max-width:760px;margin:54px auto 40px;padding:30px 30px 26px;position:relative}
+.quiz-wrap::before,.result-wrap::before,.terran-wrap::before,.scan-wrap::before,
+.seg-wrap::before,.idgen-wrap::before,.notice-wrap::before{
+  content:'';position:absolute;top:6px;left:6px;width:13px;height:13px;
+  border-top:1.5px solid var(--accent);border-left:1.5px solid var(--accent)}
+.quiz-wrap::after,.result-wrap::after,.terran-wrap::after,.scan-wrap::after,
+.seg-wrap::after,.idgen-wrap::after,.notice-wrap::after{
+  content:'';position:absolute;bottom:6px;right:6px;width:13px;height:13px;
+  border-bottom:1.5px solid var(--accent);border-right:1.5px solid var(--accent)}
+/* 选项按钮Hamcus化 */
+.opt-btn{background:rgba(10,13,12,.5)!important;border:1px solid rgba(201,197,187,.18)!important;
+  font-family:var(--mono)!important;letter-spacing:.03em}
+.opt-btn:hover{border-color:var(--accent)!important;background:rgba(232,73,29,.08)!important}
+.opt-btn .opt-key{color:var(--accent)!important}
+/* 进度格 */
+.prog-cell.lit{background:var(--accent)}
+@media(max-width:560px){
+  .quiz-wrap,.result-wrap,.terran-wrap,.scan-wrap,.seg-wrap,.idgen-wrap,.notice-wrap{
+    max-width:100%;padding:22px 18px 20px;margin-top:48px}
+}
+.landing-wrap{padding:46px 16px 40px;margin-top:54px}
+.landing-code{font-family:var(--pixel);font-size:10px;color:var(--signal-red);letter-spacing:.2em;margin-bottom:20px;opacity:.8}
+.landing-title{font-family:var(--pixel);font-size:clamp(30px,6.5vw,50px);font-weight:400;line-height:1.25;color:var(--white);margin-bottom:8px;letter-spacing:.04em;text-shadow:0 0 10px rgba(232,73,29,.28)}
+.landing-sub{font-family:var(--pixel);font-size:13px;color:var(--signal-red);letter-spacing:.2em;margin-bottom:32px;text-transform:uppercase}
 .story-block{background:rgba(46,45,42,.6);border:1px solid var(--bg3);border-left:3px solid var(--accent);padding:20px 24px;margin-bottom:32px;line-height:1.8;font-size:14px}
 .story-block p{margin-bottom:12px;color:var(--text)}
 .story-block p:last-child{margin-bottom:0;color:var(--accent);font-size:13px;font-style:italic}
-.btn-primary{display:block;width:100%;padding:16px 24px;background:var(--accent);color:var(--bg);font-size:15px;font-weight:700;letter-spacing:.1em;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:.2s;text-transform:uppercase;position:relative;overflow:hidden}
+.btn-primary{display:block;width:100%;padding:14px 24px;background:transparent;color:var(--accent);font-size:15px;font-weight:700;letter-spacing:.1em;text-align:center;cursor:pointer;border:none;font-family:inherit;transition:.2s;text-transform:uppercase;position:relative;overflow:hidden}
 .btn-primary::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.2s}
 .btn-primary:hover::before{background:rgba(255,255,255,.1)}
 .btn-refuse{display:block;text-align:center;margin-top:16px;color:var(--text2);font-size:12px;font-family:var(--mono);cursor:pointer;letter-spacing:.05em;text-decoration:none;opacity:.5;transition:.2s}
@@ -77,7 +125,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .disclaimer{font-size:11px;color:var(--text2);text-align:center;margin-top:24px;opacity:.5;line-height:1.6}
 
 /* ID GEN */
-.idgen-wrap{text-align:center;padding:80px 24px;font-family:var(--mono)}
+.idgen-wrap{text-align:left;font-family:var(--mono)}
 .idgen-wrap .tech{font-size:11px;margin-bottom:20px;display:block}
 .idgen-text{font-size:13px;color:var(--text);margin-bottom:16px;min-height:24px}
 .idgen-id{font-size:32px;color:var(--accent);font-weight:700;letter-spacing:.2em;min-height:48px;display:flex;align-items:center;justify-content:center}
@@ -85,14 +133,14 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 @keyframes blink{50%{opacity:0}}
 
 /* SEGMENT INTRO */
-.seg-wrap{text-align:center;padding:80px 24px;font-family:var(--mono)}
+.seg-wrap{text-align:left;font-family:var(--mono)}
 .seg-num{font-size:11px;color:var(--accent);letter-spacing:.3em;margin-bottom:12px;text-transform:uppercase}
 .seg-title{font-family:var(--display);font-size:26px;color:var(--white);font-weight:400;letter-spacing:.06em;margin-bottom:12px}
 .seg-desc{font-size:12px;color:var(--text2);letter-spacing:.1em}
 
 /* SYSTEM NOTICE */
-.notice-wrap{padding:60px 24px;font-family:var(--mono);text-align:center}
-.notice-text{font-size:14px;color:var(--accent);letter-spacing:.08em;line-height:1.8;border:1px solid rgba(200,134,26,.3);padding:20px 24px;background:rgba(200,134,26,.04)}
+.notice-wrap{font-family:var(--mono);text-align:left}
+.notice-text{font-size:14px;color:var(--accent);letter-spacing:.08em;line-height:1.8;border:1px solid rgba(232,73,29,.3);padding:20px 24px;background:rgba(232,73,29,.04)}
 .notice-text .warn{font-size:11px;color:var(--text2);margin-top:8px;display:block}
 
 /* QUIZ */
@@ -109,12 +157,12 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .q-tag{font-size:11px;color:var(--sand);margin-left:8px;font-weight:400;font-family:var(--mono)}
 .options{display:flex;flex-direction:column;gap:10px}
 .opt-btn{background:rgba(46,45,42,.8);border:1px solid var(--bg3);padding:14px 18px;text-align:left;cursor:pointer;color:var(--text);font-size:14px;font-family:inherit;line-height:1.5;transition:.2s;position:relative}
-.opt-btn:hover{border-color:var(--accent);background:rgba(200,134,26,.06);color:var(--white)}
+.opt-btn:hover{border-color:var(--accent);background:rgba(232,73,29,.06);color:var(--white)}
 .opt-btn .opt-key{font-family:var(--mono);font-size:10px;color:var(--accent);margin-right:10px;letter-spacing:.1em}
-.opt-btn.selected{border-color:var(--accent);background:rgba(200,134,26,.12);color:var(--white)}
+.opt-btn.selected{border-color:var(--accent);background:rgba(232,73,29,.12);color:var(--white)}
 
 /* SCANNING */
-.scan-wrap{padding:80px 24px;font-family:var(--mono)}
+.scan-wrap{font-family:var(--mono)}
 .scan-header{font-size:10px;color:var(--accent);letter-spacing:.2em;margin-bottom:20px;text-transform:uppercase}
 .scan-terminal{background:rgba(10,10,8,.8);border:1px solid var(--bg3);padding:20px;min-height:280px;font-size:12px;line-height:2;color:var(--text)}
 .scan-line{opacity:0;animation:scanline .1s ease forwards}
@@ -135,7 +183,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .gene-name-en{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.2em;margin-bottom:16px;text-transform:uppercase}
 .match-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap}
 .match-score{font-family:var(--mono);font-size:11px;color:var(--text2);letter-spacing:.1em}
-.rarity-badge{font-family:var(--mono);font-size:11px;background:rgba(200,134,26,.15);border:1px solid rgba(200,134,26,.4);color:var(--accent);padding:4px 12px;letter-spacing:.1em}
+.rarity-badge{font-family:var(--mono);font-size:11px;background:rgba(232,73,29,.15);border:1px solid rgba(232,73,29,.4);color:var(--accent);padding:4px 12px;letter-spacing:.1em}
 .section-label{font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px;margin-top:28px;padding-bottom:6px;border-bottom:1px solid var(--bg3)}
 .mix-bar{margin-bottom:24px}
 .mix-row{display:flex;align-items:center;gap:12px;margin-bottom:8px}
@@ -158,8 +206,8 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .epilogue .blacked{background:var(--text2);color:transparent;user-select:none;letter-spacing:.3em}
 .btn-cert{display:block;width:100%;padding:16px;background:var(--accent);color:var(--bg);font-weight:700;font-size:14px;letter-spacing:.12em;text-align:center;cursor:pointer;border:none;font-family:inherit;text-transform:uppercase;margin-bottom:12px;transition:.2s}
 .btn-cert:hover{filter:brightness(1.1)}
-.btn-share{display:block;width:100%;padding:14px;background:transparent;color:var(--accent);font-size:13px;letter-spacing:.1em;text-align:center;cursor:pointer;border:1px solid rgba(200,134,26,.4);font-family:inherit;text-transform:uppercase;transition:.2s}
-.btn-share:hover{background:rgba(200,134,26,.08)}
+.btn-share{display:block;width:100%;padding:14px;background:transparent;color:var(--accent);font-size:13px;letter-spacing:.1em;text-align:center;cursor:pointer;border:1px solid rgba(232,73,29,.4);font-family:inherit;text-transform:uppercase;transition:.2s}
+.btn-share:hover{background:rgba(232,73,29,.08)}
 .media-list{list-style:none;padding:0}
 .media-list li{font-size:13px;color:var(--text);padding:8px 0;border-bottom:1px solid var(--bg3);line-height:1.6}
 .media-list li:last-child{border-bottom:none}
@@ -182,25 +230,25 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 
 /* CERTIFICATE CARD (for html2canvas) */
 #cert-card{width:400px;min-height:533px;background:#14130f;border:1px solid #3a3936;padding:32px 28px;font-family:'PingFang SC','Microsoft YaHei','Courier New',monospace;position:relative;overflow:hidden;flex-direction:column}
-#cert-card .cert-bg-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#c8861a 0,#c8861a 1px,transparent 0,transparent 50%);background-size:20px 20px;pointer-events:none}
+#cert-card .cert-bg-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#e8491d 0,#e8491d 1px,transparent 0,transparent 50%);background-size:20px 20px;pointer-events:none}
 #cert-card .cert-top{margin-bottom:16px;border-bottom:1px solid #3a3936;padding-bottom:16px}
-#cert-card .cert-org{font-size:8px;letter-spacing:.25em;color:#c8861a;text-transform:uppercase;margin-bottom:4px}
+#cert-card .cert-org{font-size:8px;letter-spacing:.25em;color:#e8491d;text-transform:uppercase;margin-bottom:4px}
 #cert-card .cert-main-title{font-size:16px;font-weight:900;color:#e8e4dc;letter-spacing:.05em;margin-bottom:2px}
 #cert-card .cert-main-title-en{font-size:9px;color:#8a7a5c;letter-spacing:.2em;text-transform:uppercase}
 #cert-card .cert-portrait{width:100%;height:220px;object-fit:cover;margin-bottom:16px;background:#2e2d2a;display:flex;align-items:center;justify-content:center;font-size:60px;border:1px solid #3a3936}
 #cert-card .cert-id-row{display:flex;justify-content:space-between;font-size:9px;color:#8a7a5c;font-family:'Courier New',monospace;letter-spacing:.12em;margin-bottom:16px}
 #cert-card .cert-gene-block{text-align:center;margin-bottom:16px;border:1px solid #3a3936;padding:16px}
 #cert-card .cert-gene-name{font-size:22px;font-weight:900;color:#e8e4dc;margin-bottom:2px}
-#cert-card .cert-gene-name-en{font-size:9px;letter-spacing:.25em;color:#c8861a;text-transform:uppercase;margin-bottom:8px}
+#cert-card .cert-gene-name-en{font-size:9px;letter-spacing:.25em;color:#e8491d;text-transform:uppercase;margin-bottom:8px}
 #cert-card .cert-batch{font-size:9px;color:#8a7a5c;letter-spacing:.12em}
-#cert-card .cert-rarity{font-size:10px;color:#c8861a;font-family:'Courier New',monospace;margin-top:6px}
+#cert-card .cert-rarity{font-size:10px;color:#e8491d;font-family:'Courier New',monospace;margin-top:6px}
 #cert-card .cert-mix{margin-bottom:16px}
 #cert-card .cert-mix-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
 #cert-card .cert-mix-label{font-size:8px;color:#8a7a5c;width:60px;font-family:'Courier New',monospace;letter-spacing:.08em}
 #cert-card .cert-mix-bar{flex:1;height:4px;background:#2e2d2a}
-#cert-card .cert-mix-fill{height:4px;background:#c8861a}
+#cert-card .cert-mix-fill{height:4px;background:#e8491d}
 #cert-card .cert-mix-pct{font-size:8px;color:#8a7a5c;width:28px;text-align:right;font-family:'Courier New',monospace}
-#cert-card .cert-status{background:rgba(200,134,26,.08);border:1px solid rgba(200,134,26,.2);padding:10px 14px;font-size:9px;color:#c8861a;font-family:'Courier New',monospace;letter-spacing:.1em;margin-bottom:16px;line-height:1.8}
+#cert-card .cert-status{background:rgba(232,73,29,.08);border:1px solid rgba(232,73,29,.2);padding:10px 14px;font-size:9px;color:#e8491d;font-family:'Courier New',monospace;letter-spacing:.1em;margin-bottom:16px;line-height:1.8}
 #cert-card .cert-footer{border-top:1px solid #3a3936;padding-top:12px;display:flex;justify-content:space-between;align-items:flex-end}
 #cert-card .cert-sign{font-size:8px;color:#8a7a5c;line-height:1.8}
 #cert-card .cert-qr{width:40px;height:40px;background:#2e2d2a;border:1px solid #3a3936;display:flex;align-items:center;justify-content:center;font-size:20px}
@@ -218,28 +266,32 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 #fxLayer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .fx-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;will-change:opacity}
 .fx-bg.on{opacity:1}
-.fx-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,15,13,.5) 0%,rgba(16,15,13,.66) 55%,rgba(16,15,13,.82) 100%)}
+.fx-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,26,28,.5) 0%,rgba(20,28,30,.66) 55%,rgba(14,20,22,.84) 100%)}
 .fx-fog{position:absolute;width:170%;height:170%;left:-35%;top:-35%;background:radial-gradient(ellipse at 30% 45%,rgba(201,197,187,.075),transparent 58%),radial-gradient(ellipse at 75% 70%,rgba(138,122,92,.06),transparent 52%);animation:fxdrift 44s ease-in-out infinite alternate;will-change:transform}
 .fx-fog.fb{animation-duration:67s;animation-direction:alternate-reverse;background:radial-gradient(ellipse at 62% 28%,rgba(201,197,187,.05),transparent 55%)}
 @keyframes fxdrift{from{transform:translate3d(-3.5%,-2%,0)}to{transform:translate3d(3.5%,2.5%,0)}}
 #fxDust{position:absolute;inset:0}
 #fxDust span{position:absolute;border-radius:50%;background:rgba(232,228,220,.9);animation:fxfloat linear infinite}
 @keyframes fxfloat{from{transform:translateY(0)}to{transform:translateY(-120vh)}}
+.fx-signal{position:absolute;left:50%;top:34%;width:42vw;max-width:300px;height:42vw;max-height:300px;transform:translate(-50%,-50%);pointer-events:none;background:radial-gradient(circle,rgba(232,73,29,.5) 0%,rgba(232,73,29,.13) 28%,transparent 60%);mix-blend-mode:screen;opacity:0;animation:beacon 5.5s steps(1) infinite}
+@keyframes beacon{0%,7%{opacity:0}8%{opacity:.9}9%{opacity:.15}10%{opacity:.85}12%{opacity:0}48%{opacity:0}49%{opacity:.7}50%{opacity:.1}51%{opacity:.6}53%{opacity:0}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.fx-signal{animation:none;opacity:.25}}
 .fx-vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.5) 100%)}
 .screen{position:relative;z-index:2}
 .gene-portrait-wrap{position:relative;margin-bottom:24px;border:1px solid var(--bg3);background:#14130f;overflow:hidden}
 .gene-portrait-wrap .gene-portrait{display:block;width:100%;max-height:340px;object-fit:cover;object-position:center 20%;margin-bottom:0;border:0}
 .gene-portrait-wrap::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 70%,rgba(16,15,13,.45))}
 .portrait-tag{position:absolute;bottom:10px;right:12px;font-family:var(--mono);font-size:10px;color:rgba(232,228,220,.78);letter-spacing:.15em;text-transform:uppercase;text-shadow:0 1px 3px rgba(0,0,0,.85);z-index:1}
-.btn-primary{box-shadow:0 0 20px rgba(200,134,26,.22)}
-.btn-primary:active{box-shadow:0 0 30px rgba(200,134,26,.45)}
+.btn-primary{box-shadow:0 0 20px rgba(232,73,29,.28)}
+.btn-primary:active{box-shadow:0 0 30px rgba(232,73,29,.5)}
 .opt-btn{background:rgba(24,23,21,.78)}
-.opt-btn.selected{box-shadow:0 0 16px rgba(200,134,26,.3)}
+.opt-btn.selected{box-shadow:0 0 16px rgba(232,73,29,.3)}
 .opt-btn::before,.opt-btn::after{content:'';position:absolute;width:3px;height:3px;background:rgba(138,133,128,.5)}
 .opt-btn::before{top:5px;left:5px}
 .opt-btn::after{bottom:5px;right:5px}
-.story-block{background:rgba(18,17,15,.66)}
-.story-final{font-family:var(--pixel)!important;color:var(--accent)!important;font-style:normal!important;font-size:17px!important;font-weight:400;letter-spacing:.12em;line-height:1.6;border-top:1px dashed rgba(200,134,26,.35);padding-top:14px;margin-top:6px;text-shadow:0 0 6px rgba(200,134,26,.4)}
+#screen-landing .story-block{background:rgba(18,21,22,.7);border-left-color:var(--signal-red)}
+#screen-landing .story-block p:last-child{color:var(--signal-red)}
+.story-final{font-family:var(--pixel)!important;color:var(--signal-red)!important;font-style:normal!important;font-size:17px!important;font-weight:400;letter-spacing:.12em;line-height:1.6;border-top:1px dashed rgba(232,73,29,.38);padding-top:14px;margin-top:6px;text-shadow:0 0 8px rgba(232,73,29,.5)}
 .btn-primary,.opt-btn{min-height:44px}
 @media (prefers-reduced-motion:reduce){.fx-fog,#fxDust span{animation:none}}
 @media(max-width:480px){
@@ -251,7 +303,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </style>
 </head>
 <body>
-<div id="fxLayer" aria-hidden="true"><div class="fx-bg" id="fxBgA"></div><div class="fx-bg" id="fxBgB"></div><div class="fx-fog fa"></div><div class="fx-fog fb"></div><div id="fxDust"></div><div class="fx-vig"></div></div>
+<div id="fxLayer" aria-hidden="true"><div class="fx-bg" id="fxBgA"></div><div class="fx-bg" id="fxBgB"></div><div class="fx-fog fa"></div><div class="fx-fog fb"></div><div id="fxDust"></div><div class="fx-signal"></div><div class="fx-vig"></div></div>
 <div class="fog"></div>
 
 <div class="sys-header">
@@ -263,20 +315,41 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <!-- LANDING -->
   <div class="screen active" id="screen-landing">
     <div class="landing-wrap">
-      <div class="landing-code tech">ARCHIVE ACCESS PORT // VER 3.1 // CLASSIFICATION: LEAKED</div>
-      <h1 class="landing-title" data-i18n="landingTitle">外星基因<br>检测报告</h1>
-      <div class="landing-sub" data-i18n="landingSubtitle">Alien DNA Scan · Project Recall</div>
-      <div class="story-block">
-        <p data-i18n="storyP1">远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。</p>
-        <p data-i18n="storyP2">直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。</p>
-        <p data-i18n="storyP3">后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。</p>
-        <p data-i18n="storyP4">「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。</p>
-        <p data-i18n="storyP5">这个端口，是计划的内部设备。它不应出现在这里。</p>
-        <p class="story-final" data-i18n="storyFinal">接入即受测。检测不可逆。</p>
+      <div class="hx-win">
+        <div class="hx-titlebar">
+          <span class="l"><span>//</span> <span data-i18n="winTitle">母星召回计划 · 档案库</span> <span class="tag">RC-12</span></span>
+          <span class="x">×</span>
+        </div>
+        <div class="hx-body">
+          <span class="hx-corner tl"></span><span class="hx-corner tr"></span>
+          <span class="hx-corner bl"></span><span class="hx-corner br"></span>
+
+          <div class="hx-meta">ARCHIVE ACCESS PORT // VER 3.1 // CLASSIFICATION: LEAKED</div>
+          <h1 class="landing-title" data-i18n="landingTitle" style="margin-top:14px">外星基因<br>检测报告</h1>
+          <div class="landing-sub" data-i18n="landingSubtitle" style="margin-bottom:0">Alien DNA Scan · Project Recall</div>
+
+          <div class="hx-divider"></div>
+
+          <div class="hx-story">
+            <p data-i18n="storyP1">远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。</p>
+            <p data-i18n="storyP2">直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。</p>
+            <p data-i18n="storyP3">后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。</p>
+            <p data-i18n="storyP4">「母星召回计划」为此设立。只做一件事：在窗口期到来前，登记每一名携带者。</p>
+            <p data-i18n="storyP5">这个端口，是计划的内部设备。它不应出现在这里。</p>
+            <p class="hx-final" data-i18n="storyFinal">接入即受测。检测不可逆。</p>
+          </div>
+
+          <div class="hx-divider"></div>
+
+          <button class="hx-btn" onclick="startScan()" data-i18n="btnAccess">接入扫描端口 <span class="ar">→</span></button>
+          <a class="hx-refuse" onclick="refuseAccess()" data-i18n="btnRefuse">// 拒绝接入</a>
+
+          <div class="hx-foot">
+            <span data-i18n="disclaimer">娱乐内容 · 档案局并不存在（大概）</span>
+            <span>LAT 30°N // SEQ.00-12</span>
+          </div>
+        </div>
       </div>
-      <button class="btn-primary" onclick="startScan()" data-i18n="btnAccess">⊕ 接入扫描端口</button>
-      <a class="btn-refuse" onclick="refuseAccess()" data-i18n="btnRefuse">拒绝接入</a>
-      <div class="disclaimer" data-i18n="disclaimer">本扫描为娱乐内容，档案局并不存在（大概）。📜标签为都市传说，🎬为科幻虚构，仅🔬标签为真实科学。</div>
     </div>
   </div>
 
@@ -438,7 +511,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 const GENES = ['grey','reptilian','anunnaki','pleiadian','sirian','arcturian','heptapod','trisolaran','lyran','orion','andromedan','mantis'];
 // === IMAGE ASSETS ===
 const ASSET_PORTRAIT={"grey": "assets/lyu8495__a_grey_alien_with_smooth_grey_skin_oversized_black_a_14adaa36-94e3-4a14-b813-6c3c05607e17_0.png", "orion": "assets/lyu8495_a_battle-hardened_alien_warrior_with_sharp_features_a_b9b8496a-c45a-4f39-b57c-8e91d5e17e40_1.png", "terran": "assets/lyu8495_a_determined_human_soldier_with_weathered_face_and_st_9fab1d8b-1bce-4373-bbd2-51fad02eb174_3.png", "reptilian": "assets/lyu8495_a_dignified_reptilian_humanoid_with_fine_emerald_scal_75fa3d73-40d2-4e51-9758-2c51593cec84_1.png", "lyran": "assets/lyu8495_a_feline_humanoid_alien_with_amber_cat_eyes_Lion_comb_633956ea-86b8-493b-9a7a-7a29a345b8c2_2.png", "andromedan": "assets/lyu8495_a_free-spirited_androgynous_alien_with_wind-blown_hai_e61bb0c5-363e-4d51-9681-ef418ad6b025_1.png", "heptapod": "assets/lyu8495_a_graceful_heptapod_alien_seven_limbs_emerging_from_s_c100d517-dfd2-434c-a2c2-babab8179a0f_1.png", "trisolaran": "assets/lyu8495_a_humanoid_figure_with_shimmering_parchment-like_dehy_bfe05c86-4e0f-4c92-869f-a8e85e4e1162_2.png", "pleiadian": "assets/lyu8495_a_luminous_nordic_humanoid_with_long_pale_hair_and_ge_9b6b1c57-1c6e-490e-82ab-4f82a4138a29_0.png", "mantis": "assets/lyu8495_a_serene_mantis-like_tall_alien_with_elegant_folded_f_8e8deedc-d156-4f3d-893c-98566cdba9c7_0.png", "anunnaki": "assets/lyu8495_a_tall_regal_humanoid_with_ancient_Sumerian_braided_b_a7a25d6c-4e3b-4996-8322-f92436ba0278_2.png", "sirian": "assets/lyu8495_an_elegant_blue-skinned_humanoid_with_Egyptian_featur_4da7c38f-e821-4484-9179-6b607a4dc6a5_3.png", "arcturian": "assets/lyu8495_an_ethereal_tall_being_with_elongated_head_and_faint__fed575b6-40cb-4295-9963-2d6c0efd52f0_1.png"};
-const ASSET_BG={"landing": "assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_ed963d20-c24a-47da-87a7-f566b1702f9c_1.png", "result": "assets/lyu8495_underground_archive_vault_endless_rows_of_weathered_f_ee87abdc-7cba-454e-a64e-24666b421e9a_0.png", "quiz": "assets/lyu8495_vast_post-apocalyptic_wasteland_at_dusk_a_lone_rusted_61433dac-db20-438b-b43d-c5ff97364688_0.png"};
+const ASSET_BG={"landing": "assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_c82d0d94-cfc1-4332-a278-5570d295fa19_2.png", "result": "assets/lyu8495_underground_archive_vault_endless_rows_of_weathered_f_ee87abdc-7cba-454e-a64e-24666b421e9a_0.png", "quiz": "assets/lyu8495_vast_post-apocalyptic_wasteland_at_dusk_a_lone_rusted_61433dac-db20-438b-b43d-c5ff97364688_0.png", "terranbg": "assets/lyu8495_an_immense_unknowable_silhouette_barely_visible_behin_ed963d20-c24a-47da-87a7-f566b1702f9c_1.png"};
 function pfb(img,emoji){const d=document.createElement('div');d.className='portrait-placeholder';d.style.fontSize='80px';d.setAttribute('data-label',img.alt||'');d.textContent=emoji;const w=img.closest('.gene-portrait-wrap');(w||img).replaceWith(d)}
 function setCertPortrait(id,emoji){const el=document.getElementById('certPortrait');el.textContent='';const im=document.createElement('img');im.src=ASSET_PORTRAIT[id];im.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center 20%';im.onerror=function(){el.textContent=emoji};el.appendChild(im)}
 
@@ -673,6 +746,7 @@ const STRINGS = {
   zh:{
     landingTitle:'外星基因\n检测报告',
     landingSubtitle:'Alien DNA Scan · Project Recall',
+    winTitle:'母星召回计划 · 档案库',
     storyP1:'远古文本里反复出现同一类记载：非地球实体定期到访，在人类身上留下"标记"。这些记载一直被当作神话。',
     storyP2:'直到基因测序给出一个数字：人类DNA中，约8%来源不明。科学界叫它垃圾。',
     storyP3:'后来，有人在这8%里分离出12段休眠序列。每一段，对应一个外星签名。注入发生在远古。注入者不明。目的不明。',
@@ -748,6 +822,7 @@ const STRINGS = {
   en:{
     landingTitle:'Alien DNA\nScan Report',
     landingSubtitle:'Alien DNA Scan · Project Recall',
+    winTitle:'PROJECT RECALL · ARCHIVE',
     storyP1:'Ancient texts repeat the same account: non-terrestrial entities arriving in cycles, leaving "marks" on humans. For centuries, this was filed as myth.',
     storyP2:'Then gene sequencing produced a number: about 8% of human DNA has no known origin. Science calls it junk.',
     storyP3:'Within that 8%, twelve dormant sequences were isolated. Each one matches an alien signature. The insertions are ancient. The source: unknown. The purpose: unknown.',
@@ -858,7 +933,7 @@ function genArchiveId(){
 }
 
 // === SCENE BACKGROUND SYSTEM ===
-const SCENE_BG={'landing':'landing','terran-a':'landing','terran-b':'result','result':'result'};
+const SCENE_BG={'landing':'landing','terran-a':'terranbg','terran-b':'result','result':'result'};
 let bgCur='',bgFlip=false;
 function setSceneBg(id){
   const key=SCENE_BG[id]||'quiz';
@@ -869,16 +944,7 @@ function setSceneBg(id){
   show.style.backgroundImage='url("'+ASSET_BG[key]+'")';
   show.classList.add('on');hide.classList.remove('on');
 }
-function initDust(){
-  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  const d=document.getElementById('fxDust');if(!d)return;
-  const n=innerWidth<480?16:24;
-  for(let i=0;i<n;i++){const s=document.createElement('span');
-    s.style.left=Math.random()*100+'%';s.style.top=(60+Math.random()*55)+'%';
-    const dur=14+Math.random()*20;s.style.animationDuration=dur+'s';s.style.animationDelay=(-Math.random()*dur)+'s';
-    const sz=(1+Math.random()*1.8).toFixed(1);s.style.width=sz+'px';s.style.height=sz+'px';
-    s.style.opacity=(0.12+Math.random()*0.3).toFixed(2);d.appendChild(s)}
-}
+function initDust(){return;}
 document.addEventListener('DOMContentLoaded',function(){
   initDust();
   Object.values(ASSET_BG).forEach(u=>{const im=new Image();im.src=u});
